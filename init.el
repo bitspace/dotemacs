@@ -33,8 +33,8 @@
 (setq catppuccin-flavor 'macchiato)
 (add-hook 'server-after-make-frame-hook
           (lambda ()
-            (when display-graphic-p
-            (load-theme 'catppuccin :no-confirm))))
+            (when (memq window-system '(pgtk x w32 ns))
+              (load-theme 'catppuccin :no-confirm))))
 
 ;; font
 (when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
