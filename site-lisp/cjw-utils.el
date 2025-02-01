@@ -1,3 +1,9 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Utility functions
+;; At some point this is likely to grow somewhat unwieldy and I'll want to modularize
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 ;; convert a markdown style link to an org style link
 (defun cjw/convert-markdown-link-to-org ()
   "Convert a markdown style hyperlink to an org-mode style hyperlink in the current line."
@@ -24,4 +30,4 @@
   (dolist (hook hooks)
     (add-hook hook 'visual-line-mode)))
 
-(provide 'lisppets)
+(provide 'cjw-utils)

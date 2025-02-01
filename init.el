@@ -1,78 +1,46 @@
-;; My emacs config - again! It feels nice to be back in emacs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs configuration
+;; Work in progress, as always. This is a fresh start after yet another Emacs bankruptcy, followed by around 18 months
+;; without using Emacs at all.
+;; I use Linux and macOS extensively. I also have to use Windows periodically, and having a good Emacs environment
+;; in that swamp makes it a little less odious.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; add to load path early
+;; conditionally start server. Do not start when running Linux because I'm running it as a systemd service.
+(if (memq system-type '(darwin windows-nt))
+    (server-start))
+
+;; Add my local lisp directory to load-path
 (add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
-;; load package.el
+;; Load my utility functions
+(require 'cjw-utils)
+
+;; packages
 (require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-;; technomancy's better defaults
-(progn
-  (unless (or (fboundp 'helm-mode) (fboundp 'ivy-mode)
-	     (bound-and-true-p fido-vertical-mode)
-	     (bound-and-true-p vertico-mode))
-  (ido-mode t)
-  (setq ido-enable-flex-matching t))
-  (unless (memq window-system '(mac ns))
-    (menu-bar-mode -1))
-  (when (fboundp 'tool-bar-mode)
-    (tool-bar-mode -1))
-  (when (fboundp 'scroll-bar-mode)
-    (scroll-bar-mode -1))
-  (when (fboundp 'horizontal-scroll-bar-mode)
-    (horizontal-scroll-bar-mode -1))
+;; load technomancy's better-defaults
+(require 'better-defaults)
 
-  (autoload 'zap-up-to-char "misc"
-    "Kill up to, but not including, ARGth occurrence of CHAR." t)
-
-  (require 'uniquify)
-  (setq uniquify-buffer-name-style 'forward)
-
-  ;; https://www.emacswiki.org/emacs/SavePlace
-  (save-place-mode 1)
-
-  (global-set-key (kbd "M-/") 'hippie-expand)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "C-M-s") 'isearch-forward)
-  (global-set-key (kbd "C-M-r") 'isearch-backward)
-
-  (show-paren-mode 1)
-  (setq-default indent-tabs-mode nil)
-  (savehist-mode 1)
-  (setq save-interprogram-paste-before-kill t
-	apropos-do-all t
-	mouse-yank-at-point t
-	require-final-newline t
-	visible-bell t
-	load-prefer-newer t
-	backup-by-copying t
-	frame-inhibit-implied-resize t
-	read-file-name-completion-ignore-case t
-	read-buffer-completion-ignore-case t
-	completion-ignore-case t
-	ediff-window-setup-functon 'ediff-setup-windows-plain
-	custom-file (expand-file-name "custom.el" user-emacs-directory))
-
-  (unless backup-directory-alist
-    (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
-						   "backups"))))))
+;; line numbers
+(global-display-line-numbers-mode t)
+;; column number in modeline
+(column-number-mode t)
 
 ;; Theme. Only load it if we're running in a GUI.
 (setq catppuccin-flavor 'macchiato)
 (add-hook 'server-after-make-frame-hook
           (lambda ()
-            (when (memq window-system '(pgtk x w32 ns))
-              (load-theme 'catppuccin :no-confirm))))
+            (when display-graphic-p
+            (load-theme 'catppuccin :no-confirm))))
 
 ;; font
+(when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
 (set-face-attribute 'default nil
                     :family "JetBrainsMono Nerd Font Mono"
-                    :height 120) ;; Adjust height as needed
-
-;; line numbers
-(global-display-line-numbers-mode t)
+                    :height 120))
 
 ;; Enable ligatures
 ;; This assumes you've installed the package via MELPA.
@@ -104,6 +72,23 @@
 ;; auto-match pairs (brackets, braces, parens, etc)
 (electric-pair-mode 1)
 
+;; yaml-mode
+(require 'yaml-mode)
+
+;; handle .yaml and .yml files with yaml-mode
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+;; smart indent yaml on ENTER
+(add-hook 'yaml-mode-hook
+          '(lambda ()
+             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
+;; soft wrap in text modes that are not programming languages
+(cjw/enable-visual-line-mode-on-hooks
+ '(text-mode-hook
+   org-mode-hook
+   markdown-mode-hook))
+
 ;; xscheme for scheme evaluation operations
 (require 'xscheme)
 
@@ -115,4 +100,4 @@
 
 (autoload 'gfm-mode "markdown-mode"
   "Major mode for editing Github Flavored Markdown files" t)
-(add-to-list 'auto-mode-alist'("README\\.md\\'" . gfm-mode))
+(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
