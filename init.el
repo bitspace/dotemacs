@@ -1,10 +1,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs configuration
-;; Work in progress, as always. This is a fresh start after yet another Emacs bankruptcy, followed by around 18 months
-;; without using Emacs at all.
-;; I use Linux and macOS extensively. I also have to use Windows periodically, and having a good Emacs environment
-;; in that swamp makes it a little less odious.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; early init stuff: startup speed improvements, suppress startup messages
+(setq gc-cons-threshold 10000000)
+(setq byte-compile-warnings '(not obsolete))
+(setq warning-suppress-log-types '((comp) (bytecomp)))
+(setq native-comp-async-report-warnings-errors 'silent)
+(setq inhibit-startup-echo-area-message (user-login-name))
 
 ;; conditionally start server. Do not start when running Linux because I'm running it as a systemd service.
 (if (memq system-type '(darwin windows-nt))
@@ -24,17 +27,27 @@
 ;; load technomancy's better-defaults
 (require 'better-defaults)
 
-;; line numbers
-(global-display-line-numbers-mode t)
-;; column number in modeline
-(column-number-mode t)
+;; numbered lines
+(setopt global-display-line-numbers-mode t)
+;; column number and line number in modeline
+(setopt column-number-mode t)
+(setopt line-number-mode t)
+
+;; prettier underlines?
+(setopt x-underline-at-descent-line nil)
+(setopt switch-to-buffer-obey-display-actions t)
+(setopt show-trailing-whitespace nil)
+(setopt indicate-buffer-boundaries 'left)
+(pixel-scroll-precision-mode)
 
 ;; Theme. Only load it if we're running in a GUI.
-(setq catppuccin-flavor 'macchiato)
-(add-hook 'server-after-make-frame-hook
-          (lambda ()
-            (when (memq window-system '(pgtk x w32 ns))
-              (load-theme 'catppuccin :no-confirm))))
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook
+              (lambda ()
+                (with-selected-frame (selected-frame)
+                  (load-theme-if-window-system))))
+  ;; if not running as a daemon, directly check and load theme
+  (load-theme-if-window-system))
 
 ;; font
 (when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
@@ -72,6 +85,25 @@
 ;; auto-match pairs (brackets, braces, parens, etc)
 (electric-pair-mode 1)
 
+;; which-key shows keybinding completions
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+;; set some better options on the minibuffer
+(setopt enable-recursive-minibuffers t) ; use minibuffer while in minibuffer
+(setopt completion-cycle-threshold 1) ; TAB to cycle candidates
+(setopt tab-always-indent 'complete) ; TAB tries to complete, else indent
+(setopt completion-styles '(basic initials substring))
+(setopt completion-auto-help 'always) ; another option is 'lazy'
+(setopt completions-max-height 20)
+(setopt completions-detailed t)
+(setopt completions-format 'one-column)
+(setopt completions-group t)
+(setopt completions-auto-select 'second-tab)
+(keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
+
 ;; yaml-mode
 (require 'yaml-mode)
 
@@ -80,7 +112,7 @@
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 ;; smart indent yaml on ENTER
 (add-hook 'yaml-mode-hook
-          '(lambda ()
+          #'(lambda ()
              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; soft wrap in text modes that are not programming languages
@@ -88,6 +120,25 @@
  '(text-mode-hook
    org-mode-hook
    markdown-mode-hook))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Org
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Make org functions available across all of Emacs instead of just in an org-mode buffer
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+
+;; TODO state keywords
+(setq org-todo-keywords
+      '((sequence "TODO" "IN PROGRESS" "|" "CANCELLED" "DEFERRED" "DONE")))
+
+;; prefer indentation for headlines rather than multiple visible stars
+(setq org-startup-indented t)
+
+;; overwrite selection with yank
+(delete-selection-mode 1)
 
 ;; xscheme for scheme evaluation operations
 (require 'xscheme)
