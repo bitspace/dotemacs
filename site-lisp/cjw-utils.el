@@ -30,4 +30,10 @@
   (dolist (hook hooks)
     (add-hook hook 'visual-line-mode)))
 
+;; utility function to load a theme only in an active window-system
+(defun load-theme-if-window-system ()
+  "Load the theme if running in a window-system."
+  (when (memq window-system '(pgtk x w32 ns))
+    (load-theme 'catppuccin :no-confirm)))
+
 (provide 'cjw-utils)

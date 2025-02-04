@@ -41,11 +41,13 @@
 (pixel-scroll-precision-mode)
 
 ;; Theme. Only load it if we're running in a GUI.
-(setq catppuccin-flavor 'macchiato)
-(add-hook 'server-after-make-frame-hook
-          (lambda ()
-            (when (memq window-system '(pgtk x w32 ns))
-              (load-theme 'catppuccin :no-confirm))))
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook
+              (lambda ()
+                (with-selected-frame (selected-frame)
+                  (load-theme-if-window-system))))
+  ;; if not running as a daemon, directly check and load theme
+  (load-theme-if-window-system))
 
 ;; font
 (when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
@@ -110,7 +112,7 @@
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 ;; smart indent yaml on ENTER
 (add-hook 'yaml-mode-hook
-          '(lambda ()
+          #'(lambda ()
              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; soft wrap in text modes that are not programming languages
@@ -118,6 +120,25 @@
  '(text-mode-hook
    org-mode-hook
    markdown-mode-hook))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Org
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Make org functions available across all of Emacs instead of just in an org-mode buffer
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+
+;; TODO state keywords
+(setq org-todo-keywords
+      '((sequence "TODO" "IN PROGRESS" "|" "CANCELLED" "DEFERRED" "DONE")))
+
+;; prefer indentation for headlines rather than multiple visible stars
+(setq org-startup-indented t)
+
+;; overwrite selection with yank
+(delete-selection-mode 1)
 
 ;; xscheme for scheme evaluation operations
 (require 'xscheme)
