@@ -2,13 +2,6 @@
 ;; Emacs configuration
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; early init stuff: startup speed improvements, suppress startup messages
-(setq gc-cons-threshold 10000000)
-(setq byte-compile-warnings '(not obsolete))
-(setq warning-suppress-log-types '((comp) (bytecomp)))
-(setq native-comp-async-report-warnings-errors 'silent)
-(setq inhibit-startup-echo-area-message (user-login-name))
-
 ;; conditionally start server. Do not start when running Linux because I'm running it as a systemd service.
 (if (memq system-type '(darwin windows-nt))
     (server-start))
@@ -18,11 +11,6 @@
 
 ;; Load my utility functions
 (require 'cjw-utils)
-
-;; packages
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
 
 ;; load technomancy's better-defaults
 (require 'better-defaults)
@@ -40,20 +28,17 @@
 (setopt indicate-buffer-boundaries 'left)
 (pixel-scroll-precision-mode)
 
+;; set default face after loading theme
+(add-hook 'after-load-catppuccin-hook 'cjw/set-face-after-theme)
+
 ;; Theme. Only load it if we're running in a GUI.
 (if (daemonp)
     (add-hook 'server-after-make-frame-hook
               (lambda ()
                 (with-selected-frame (selected-frame)
-                  (load-theme-if-window-system))))
+                  (cjw/load-theme-if-window-system))))
   ;; if not running as a daemon, directly check and load theme
-  (load-theme-if-window-system))
-
-;; font
-(when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
-(set-face-attribute 'default nil
-                    :family "JetBrainsMono Nerd Font Mono"
-                    :height 120))
+  (cjw/load-theme-if-window-system))
 
 ;; Enable ligatures
 ;; This assumes you've installed the package via MELPA.

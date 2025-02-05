@@ -30,10 +30,17 @@
   (dolist (hook hooks)
     (add-hook hook 'visual-line-mode)))
 
-;; utility function to load a theme only in an active window-system
-(defun load-theme-if-window-system ()
+;; load a theme only in an active window-system
+(defun cjw/load-theme-if-window-system ()
   "Load the theme if running in a window-system."
   (when (memq window-system '(pgtk x w32 ns))
     (load-theme 'catppuccin :no-confirm)))
+
+;; set default face only after theme is loaded
+(defun cjw/set-face-after-theme ()
+  (when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
+    (set-face-attribute 'default nil
+                        :family "JetBrainsMono Nerd Font Mono"
+                        :height 140)))
 
 (provide 'cjw-utils)
