@@ -5,3 +5,5 @@ elpa/
 places
 ido.last
 history
+transient/
+eshell/

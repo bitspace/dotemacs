@@ -1,11 +1,9 @@
-;; early init stuff: startup speed improvements, suppress startup messages
-(setq gc-cons-threshold 10000000)
-(setq byte-compile-warnings '(not obsolete))
-(setq warning-suppress-log-types '((comp) (bytecomp)))
-(setq native-comp-async-report-warnings-errors 'silent)
-(setq inhibit-startup-echo-area-message (user-login-name))
+;; early-init.el --- early initialization -*- lexical-binding: t; -*-
+;; Copyright © 2025
+;; SPDX-License-Identifier: Unlicense
+;; Author: Chris Woods <chris@bitspace.org>
 
-;; initialize package and add melpa
+;; set up package.el and elpa sources
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-hook 'before-init-hook 'package-initialize)
