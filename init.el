@@ -1,13 +1,13 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Emacs configuration
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; init.el --- core Emacs configuration and initialization -*- lexical-binding: t; -*-
+;; Copyright © 2025
+;; SPDX-License-Identifier: Unlicense
+;; Author: Chris Woods <chris@bitspace.org>
 
-;; early init stuff: startup speed improvements, suppress startup messages
-(setq gc-cons-threshold 10000000)
-(setq byte-compile-warnings '(not obsolete))
-(setq warning-suppress-log-types '((comp) (bytecomp)))
-(setq native-comp-async-report-warnings-errors 'silent)
-(setq inhibit-startup-echo-area-message (user-login-name))
+;; load custom file early to set up `package-selected-packages'
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (and custom-file
+           (file-exists-p custom-file))
+  (load custom-file nil :nomessage))
 
 ;; conditionally start server. Do not start when running Linux because I'm running it as a systemd service.
 (if (memq system-type '(darwin windows-nt))
@@ -19,11 +19,6 @@
 ;; Load my utility functions
 (require 'cjw-utils)
 
-;; packages
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-
 ;; load technomancy's better-defaults
 (require 'better-defaults)
 
@@ -33,6 +28,18 @@
 (setopt column-number-mode t)
 (setopt line-number-mode t)
 
+;; restore the "legacy" way of navigating lines (not visual, but logical)
+(setq line-move-visual nil)
+
+;; double spaces at sentence end is for 90 year olds
+(setq sentence-end-double-space nil)
+
+;; make switching windows easier.
+(global-set-key (kbd "M-o") 'other-window)
+
+;; Consider using `windmove', provides keybindings to move window focus in cardinal directions: S-<left>, S-<right>, S-<up>, S-<down> to switch windows by direction
+; (windmove-default-keybindings)
+
 ;; prettier underlines?
 (setopt x-underline-at-descent-line nil)
 (setopt switch-to-buffer-obey-display-actions t)
@@ -40,45 +47,30 @@
 (setopt indicate-buffer-boundaries 'left)
 (pixel-scroll-precision-mode)
 
-;; Theme. Only load it if we're running in a GUI.
-(if (daemonp)
-    (add-hook 'server-after-make-frame-hook
-              (lambda ()
-                (with-selected-frame (selected-frame)
-                  (load-theme-if-window-system))))
-  ;; if not running as a daemon, directly check and load theme
-  (load-theme-if-window-system))
-
-;; font
-(when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
+(load-theme 'catppuccin :no-confirm)
 (set-face-attribute 'default nil
-                    :family "JetBrainsMono Nerd Font Mono"
-                    :height 120))
+                        :family "JetBrainsMono Nerd Font Mono"
+                        :height 140)
 
 ;; Enable ligatures
 ;; This assumes you've installed the package via MELPA.
 (use-package ligature
   :config
-  ;; Enable the "www" ligature in every possible major mode
-  (ligature-set-ligatures 't '("www"))
-  ;; Enable traditional ligature support in eww-mode, if the
-  ;; `variable-pitch' face supports it
-  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-  ;; Enable all Cascadia Code ligatures in programming modes
-  (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-                                       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-                                       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-                                       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-                                       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-                                       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-                                       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-                                       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-                                       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-                                       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-                                       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-                                       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-                                       "\\\\" "://"))
-  ;; Enables ligature checks globally in all buffers. You can also do it
+  ;; Enable ligatures in all possible modes
+  (ligature-set-ligatures 't '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+                               ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                               "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                               "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                               "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                               "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                               "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                               "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                               ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+                               "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+                               "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+                               "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+                               "\\\\" "://" "ff" "fi" "ffi"))
+    ;; Enables ligature checks globally in all buffers. You can also do it
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
@@ -90,6 +82,9 @@
   :ensure t
   :config
   (which-key-mode))
+
+;; enable isearch motion
+(setq isearch-allow-motion t)
 
 ;; set some better options on the minibuffer
 (setopt enable-recursive-minibuffers t) ; use minibuffer while in minibuffer
@@ -137,6 +132,14 @@
 ;; prefer indentation for headlines rather than multiple visible stars
 (setq org-startup-indented t)
 
+;; org-babel: don't prompt for code evaluation confirmation
+(setq org-confirm-babel-evaluate nil)
+
+;; org-babel: languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((scheme . t)))
+
 ;; overwrite selection with yank
 (delete-selection-mode 1)
 
@@ -152,3 +155,11 @@
 (autoload 'gfm-mode "markdown-mode"
   "Major mode for editing Github Flavored Markdown files" t)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
+;; projectile
+(projectile-mode 1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+;; magit
+(use-package magit)
+(put 'upcase-region 'disabled nil)
