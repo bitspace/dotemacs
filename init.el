@@ -47,10 +47,15 @@
 (setopt indicate-buffer-boundaries 'left)
 (pixel-scroll-precision-mode)
 
-(load-theme 'catppuccin :no-confirm)
 (set-face-attribute 'default nil
                         :family "JetBrainsMono Nerd Font Mono"
                         :height 140)
+
+(load-theme 'catppuccin :no-confirm)
+(custom-theme-set-faces
+ 'user
+ '(variable-pitch ((t (:family "Inter" :height 140 :weight medium))))
+ '(fixed-pitch ((t (:family "JetBrainsMono Nerd Font Mono" :height 140)))))
 
 ;; Enable ligatures
 ;; This assumes you've installed the package via MELPA.
@@ -131,6 +136,36 @@
 
 ;; prefer indentation for headlines rather than multiple visible stars
 (setq org-startup-indented t)
+
+;; Make bullets look nicer
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+;; better header bullets
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+
+;; make better headers?
+(let* ((variable-tuple (cond ((x-list-fonts "Inter") '(:font "Inter"))
+                             (nil (warn "Cannot find a Sans Serif Font.  Install one."))))
+       (base-font-color     (face-foreground 'default nil 'default))
+       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+
+  (custom-theme-set-faces 'user
+                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+
+;; hide emphasis symbols
+(setq org-hide-emphasis-markers t)
 
 ;; org-babel: don't prompt for code evaluation confirmation
 (setq org-confirm-babel-evaluate nil)
