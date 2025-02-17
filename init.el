@@ -28,6 +28,12 @@
 (setopt column-number-mode t)
 (setopt line-number-mode t)
 
+;; restore the "legacy" way of navigating lines (not visual, but logical)
+(setq line-move-visual nil)
+
+;; double spaces at sentence end is for 90 year olds
+(setq sentence-end-double-space nil)
+
 ;; make switching windows easier.
 (global-set-key (kbd "M-o") 'other-window)
 
@@ -76,6 +82,9 @@
   :ensure t
   :config
   (which-key-mode))
+
+;; enable isearch motion
+(setq isearch-allow-motion t)
 
 ;; set some better options on the minibuffer
 (setopt enable-recursive-minibuffers t) ; use minibuffer while in minibuffer
@@ -153,3 +162,4 @@
 
 ;; magit
 (use-package magit)
+(put 'upcase-region 'disabled nil)
