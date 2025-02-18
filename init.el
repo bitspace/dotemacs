@@ -138,9 +138,9 @@
 (setq org-startup-indented t)
 
 ;; Make bullets look nicer
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 ;; better header bullets
 (require 'org-bullets)
@@ -148,21 +148,37 @@
 (add-hook 'org-mode-hook 'variable-pitch-mode)
 
 ;; make better headers?
-(let* ((variable-tuple (cond ((x-list-fonts "Inter") '(:font "Inter"))
-                             (nil (warn "Cannot find a Sans Serif Font.  Install one."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+;; (let* ((variable-tuple (cond ((x-list-fonts "Inter") '(:font "Inter"))
+;;                              (nil (warn "Cannot find a Sans Serif Font.  Install one."))))
+;;        (base-font-color     (face-foreground 'default nil 'default))
+;;        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
 
-  (custom-theme-set-faces 'user
-                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+;;   (custom-theme-set-faces 'user
+;;                           `(org-level-8 ((t (,@headline ,@variable-tuple))))
+;;                           `(org-level-7 ((t (,@headline ,@variable-tuple))))
+;;                           `(org-level-6 ((t (,@headline ,@variable-tuple))))
+;;                           `(org-level-5 ((t (,@headline ,@variable-tuple))))
+;;                           `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+;;                           `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+;;                           `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+;;                           `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+;;                           `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+
+;; fix faces
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
 ;; hide emphasis symbols
 (setq org-hide-emphasis-markers t)
@@ -198,3 +214,8 @@
 ;; magit
 (use-package magit)
 (put 'upcase-region 'disabled nil)
+
+;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico
+(ido-mode t)
+(setq ido-everywhere t)
+(setq ido-enable-flex-matching t)
