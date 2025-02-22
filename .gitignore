@@ -1,9 +1,11 @@
 auto-save-list/
 backups/
-eln-cache/
 elpa/
-places
-ido.last
-history
-transient/
+eln-cache/
 eshell/
+history
+ido.last
+places
+secrets/
+transient/
+url/

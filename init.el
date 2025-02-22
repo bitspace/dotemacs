@@ -22,6 +22,13 @@
 ;; load technomancy's better-defaults
 (require 'better-defaults)
 
+;; use Emacs's pin entry
+(setenv "GPG_AGENT_INFO" nil)
+
+;; set up auth source. The sources listed here should not be committed to a remote source control repo.
+(setq auth-sources
+      '((:source "~/.config/emacs/secrets/.authinfo.gpg")))
+
 ;; numbered lines
 (setopt global-display-line-numbers-mode t)
 ;; column number and line number in modeline
@@ -52,10 +59,6 @@
                         :height 140)
 
 (load-theme 'catppuccin :no-confirm)
-(custom-theme-set-faces
- 'user
- '(variable-pitch ((t (:family "Inter" :height 140 :weight medium))))
- '(fixed-pitch ((t (:family "JetBrainsMono Nerd Font Mono" :height 140)))))
 
 ;; Enable ligatures
 ;; This assumes you've installed the package via MELPA.
@@ -125,6 +128,58 @@
 ;; Org
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; org-superstar
+(require 'org-superstar)
+
+;; Make org much nicer - see org-superstar-mode demo reel
+;; https://github.com/integral-dw/org-superstar-mode/blob/master/DEMO.org
+;;; Titles and Sections
+;; hide #+TITLE: - I actually don't want to, leaving commented for example
+                                        ;(setq org-hidden-keywords '(title))
+;; set basic title font
+(set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
+;; Low levels are unimportant => no scaling
+(set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
+(set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
+(set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
+(set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
+;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
+(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.2) ;\large
+(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.44) ;\Large
+(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.728) ;\LARGE
+;; Only use the first 4 styles and do not cycle.
+(setq org-cycle-level-faces nil)
+(setq org-n-level-faces 4)
+;; Document Title
+(set-face-attribute 'org-document-title nil
+                    :height 1.4
+                    :foreground 'unspecified
+                    :inherit 'org-level-8)
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (org-superstar-mode 1)
+            (variable-pitch-mode 1)))
+
+;; org inline tasks
+(require 'org-inlinetask)
+(setq org-inlinetask-show-first-star t)
+;; less gray
+(set-face-attribute 'org-inlinetask nil
+                    :foreground 'unspecified
+                    :inherit 'bold)
+
+(with-eval-after-load 'org-superstar
+  (set-face-attribute 'org-superstar-item nil :height 1.2)
+  (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
+  (set-face-attribute 'org-superstar-first nil :foreground "#0000e1"))
+;; Stop cycling bullets to emphasize hierarchy of headlines.
+(setq org-superstar-cycle-headline-bullets nil)
+;; hide leading things
+(setq org-hide-leading-stars t)
+;; Hide away leading stars on terminal
+(setq org-superstar-leading-fallback ?\s)
+
 ;; Make org functions available across all of Emacs instead of just in an org-mode buffer
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -134,35 +189,8 @@
 (setq org-todo-keywords
       '((sequence "TODO" "IN PROGRESS" "|" "CANCELLED" "DEFERRED" "DONE")))
 
-;; prefer indentation for headlines rather than multiple visible stars
-(setq org-startup-indented t)
-
-;; Make bullets look nicer
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-;; better header bullets
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-(add-hook 'org-mode-hook 'variable-pitch-mode)
-
-;; make better headers?
-(let* ((variable-tuple (cond ((x-list-fonts "Inter") '(:font "Inter"))
-                             (nil (warn "Cannot find a Sans Serif Font.  Install one."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
-
-  (custom-theme-set-faces 'user
-                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+;; variable pitch fonts in org
+;; (add-hook 'org-mode-hook 'variable-pitch-mode)
 
 ;; hide emphasis symbols
 (setq org-hide-emphasis-markers t)
@@ -198,3 +226,8 @@
 ;; magit
 (use-package magit)
 (put 'upcase-region 'disabled nil)
+
+;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico
+(ido-mode t)
+(setq ido-everywhere t)
+(setq ido-enable-flex-matching t)
