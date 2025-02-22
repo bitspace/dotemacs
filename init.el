@@ -189,9 +189,6 @@
 (setq org-todo-keywords
       '((sequence "TODO" "IN PROGRESS" "|" "CANCELLED" "DEFERRED" "DONE")))
 
-;; variable pitch fonts in org
-;; (add-hook 'org-mode-hook 'variable-pitch-mode)
-
 ;; hide emphasis symbols
 (setq org-hide-emphasis-markers t)
 

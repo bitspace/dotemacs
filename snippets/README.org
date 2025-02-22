@@ -1,6 +1,0 @@
-* Snippets and project starters
-This little junk drawer of a directory is holding snippets of various elisp and other stuff that I am considering incorporating into my workflow.
-** Links
-[[https://github.com/magit/with-editor][with-editor]] is a library that makes it possible to reliably use emacsclient as the $EDITOR of child processes.
-[[https://www.youtube.com/watch?v=Dkoy3NrLN9g&list=PL8Bwba5vnQK14z96Gil86pLMDO2GnOhQ6][Playlist of recent emacs config videos]] from prot - including some walkthrough for literate config (org based with org-tangle?)
-[[https://leanpub.com/markdown-mode/read][Markdown mode guide]] an ebook put together by the person who wrote markdown-mode.
