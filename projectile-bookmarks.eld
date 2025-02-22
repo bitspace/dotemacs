@@ -1,1 +1,1 @@
-("~/Documents/metalmind/" "~/.config/emacs/" "~/tmp/" "~/Projects/emacs/crafted-emacs/" "~/Documents/coppermind/" "~/Projects/sandbox/" "~/Projects/prompt-library/")
+("~/.config/emacs/" "~/Documents/metalmind/" "~/tmp/" "~/Projects/emacs/crafted-emacs/" "~/Documents/coppermind/" "~/Projects/sandbox/" "~/Projects/prompt-library/")
