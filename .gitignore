@@ -9,3 +9,7 @@ places
 secrets/
 transient/
 url/
+.cache/
+bookmarks
+projectile-bookmarks.eld
+tramp

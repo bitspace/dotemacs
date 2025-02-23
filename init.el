@@ -25,6 +25,20 @@
 ;; dired-x
 (require 'dired-x)
 
+;; lsp
+(use-package lsp-mode
+  :commands lsp
+  :hook
+  (sh-mode . lsp))
+
+(use-package lsp-ui)
+
+;; github copilot
+(use-package copilot)
+(add-hook 'prog-mode-hook 'copilot-mode)
+(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+
 ;; use Emacs's pin entry
 (setenv "GPG_AGENT_INFO" nil)
 
@@ -232,11 +246,3 @@
 (ido-mode t)
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
-
-;; lsp
-(use-package lsp-mode
-  :commands lsp
-  :hook
-  (sh-mode . lsp))
-
-(use-package lsp-ui)
