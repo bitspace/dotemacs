@@ -22,6 +22,9 @@
 ;; load technomancy's better-defaults
 (require 'better-defaults)
 
+;; dired-x
+(require 'dired-x)
+
 ;; use Emacs's pin entry
 (setenv "GPG_AGENT_INFO" nil)
 
@@ -127,6 +130,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq org-startup-indented t)
 
 ;; org-superstar
 (require 'org-superstar)
@@ -228,3 +232,11 @@
 (ido-mode t)
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
+
+;; lsp
+(use-package lsp-mode
+  :commands lsp
+  :hook
+  (sh-mode . lsp))
+
+(use-package lsp-ui)
