@@ -143,23 +143,14 @@
 ;; org-superstar
 (require 'org-superstar)
 
-;; Make org much nicer - see org-superstar-mode demo reel
-;; https://github.com/integral-dw/org-superstar-mode/blob/master/DEMO.org
-;;; Titles and Sections
-;; hide #+TITLE: - I actually don't want to, leaving commented for example
-                                        ;(setq org-hidden-keywords '(title))
-;; set basic title font
 (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
-;; Low levels are unimportant => no scaling
 (set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
 (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
 (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
 (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
-;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
-(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.2) ;\large
-(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.44) ;\Large
-(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.728) ;\LARGE
-;; Only use the first 4 styles and do not cycle.
+(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.2)
+(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.44)
+(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.728)
 (setq org-cycle-level-faces nil)
 (setq org-n-level-faces 4)
 ;; Document Title
@@ -176,7 +167,6 @@
 ;; org inline tasks
 (require 'org-inlinetask)
 (setq org-inlinetask-show-first-star t)
-;; less gray
 (set-face-attribute 'org-inlinetask nil
                     :foreground 'unspecified
                     :inherit 'bold)
@@ -185,7 +175,6 @@
   (set-face-attribute 'org-superstar-item nil :height 1.2)
   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
   (set-face-attribute 'org-superstar-first nil :foreground "#0000e1"))
-;; Stop cycling bullets to emphasize hierarchy of headlines.
 (setq org-superstar-cycle-headline-bullets nil)
 ;; hide leading things
 (setq org-hide-leading-stars t)
@@ -236,12 +225,14 @@
 (use-package magit)
 (put 'upcase-region 'disabled nil)
 
-;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico
+;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico.
+;; TBD: this vs. the other completion engines, especially with some new capability in Emacs 30.1?
 (ido-mode t)
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
 
 ;; gptel
+;; these additional models are still WIP, not functional yet
 (gptel-make-gemini "Gemini"
   :stream t)
 (gptel-make-perplexity "Perplexity"
