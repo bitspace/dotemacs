@@ -33,12 +33,6 @@
 
 (use-package lsp-ui)
 
-;; github copilot
-(use-package copilot)
-(add-hook 'prog-mode-hook 'copilot-mode)
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-
 ;; use Emacs's pin entry
 (setenv "GPG_AGENT_INFO" nil)
 
@@ -246,3 +240,22 @@
 (ido-mode t)
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
+
+;; gptel
+(gptel-make-gemini "Gemini"
+  :stream t)
+(gptel-make-perplexity "Perplexity"
+  :stream t)
+(gptel-make-anthropic "Anthropic"
+  :stream t)
+(gptel-make-openai "Groq"
+  :host "api.groq.com"
+  :endpoint "/openai/v1/chat/completions"
+  :stream t)
+(gptel-make-openai "GitHub Models"
+  :host "models.inference.ai.azure.com"
+  :endpoint "/chat/completions?api-version=2024-05-01-preview"
+  :stream t)
+(global-set-key (kbd "C-c RET") 'gptel-send)
+(add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+(add-hook 'gptel-post-response-hook 'gptel-end-of-response)
