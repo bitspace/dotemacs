@@ -148,14 +148,14 @@
 (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
 (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
 (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.2)
-(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.44)
-(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.728)
+(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1)
+(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2)
+(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.3)
 (setq org-cycle-level-faces nil)
 (setq org-n-level-faces 4)
 ;; Document Title
 (set-face-attribute 'org-document-title nil
-                    :height 1.4
+                    :height 1.3
                     :foreground 'unspecified
                     :inherit 'org-level-8)
 
