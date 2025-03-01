@@ -4,7 +4,7 @@
 ;; Author: Chris Woods <chris@bitspace.org>
 
 ;; load custom file early to set up `package-selected-packages'
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (and custom-file
            (file-exists-p custom-file))
   (load custom-file nil :nomessage))
@@ -37,7 +37,7 @@
 (setenv "GPG_AGENT_INFO" nil)
 
 ;; set up auth source. The sources listed here should not be committed to a remote source control repo.
-(setq auth-sources
+(setopt auth-sources
       '((:source "~/.config/emacs/secrets/.authinfo.gpg")))
 
 ;; numbered lines
@@ -47,10 +47,10 @@
 (setopt line-number-mode t)
 
 ;; restore the "legacy" way of navigating lines (not visual, but logical)
-(setq line-move-visual nil)
+(setopt line-move-visual nil)
 
 ;; double spaces at sentence end is for 90 year olds
-(setq sentence-end-double-space nil)
+(setopt sentence-end-double-space nil)
 
 ;; make switching windows easier.
 (global-set-key (kbd "M-o") 'other-window)
@@ -100,7 +100,7 @@
   (which-key-mode))
 
 ;; enable isearch motion
-(setq isearch-allow-motion t)
+(setopt isearch-allow-motion t)
 
 ;; set some better options on the minibuffer
 (setopt enable-recursive-minibuffers t) ; use minibuffer while in minibuffer
@@ -138,16 +138,16 @@
 (use-package org
   :ensure nil
   :config
-  (setq org-M-RET-may-split-line '((default . nil)))
-  (setq org-insert-heading-respect-content t)
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
-  (setq org-directory "~/Documents/metalmind")
-  (setq org-agenda-files (list org-directory))
-  (setq org-todo-keywords
+  (setopt org-M-RET-may-split-line '((default . nil)))
+  (setopt org-insert-heading-respect-content t)
+  (setopt org-log-done 'time)
+  (setopt org-log-into-drawer t)
+  (setopt org-directory "~/Documents/metalmind")
+  (setopt org-agenda-files (list org-directory))
+  (setopt org-todo-keywords
         '((sequence "TODO(t))" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
-  (setq org-startup-indented t)
-  (setq org-inlinetask-show-first-star t)
+  (setopt org-startup-indented t)
+  (setopt org-inlinetask-show-first-star t)
   (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
   (set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
   (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
@@ -156,16 +156,16 @@
   (set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1)
   (set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2)
   (set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.3)
-  (setq org-cycle-level-faces nil)
-  (setq org-n-level-faces 4)
+  (setopt org-cycle-level-faces nil)
+  (setopt org-n-level-faces 4)
   ;; Document Title
   (set-face-attribute 'org-document-title nil
                       :height 1.3
                       :foreground 'unspecified
                       :inherit 'org-level-8)
-  (setq org-hide-leading-stars t)
-  (setq org-hide-emphasis-markers t)
-  (setq org-confirm-babel-evaluate nil)
+  (setopt org-hide-leading-stars t)
+  (setopt org-hide-emphasis-markers t)
+  (setopt org-confirm-babel-evaluate nil)
   )
 
 
@@ -187,9 +187,9 @@
   (set-face-attribute 'org-superstar-item nil :height 1.2)
   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
   (set-face-attribute 'org-superstar-first nil :foreground "#0000e1"))
-(setq org-superstar-cycle-headline-bullets nil)
+(setopt org-superstar-cycle-headline-bullets nil)
 ;; Hide away leading stars on terminal
-(setq org-superstar-leading-fallback ?\s)
+(setopt org-superstar-leading-fallback ?\s)
 
 ;; Make org functions available across all of Emacs instead of just in an org-mode buffer
 (global-set-key (kbd "C-c l") #'org-store-link)
@@ -231,8 +231,8 @@
 ;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico.
 ;; TBD: this vs. the other completion engines, especially with some new capability in Emacs 30.1?
 (ido-mode t)
-(setq ido-everywhere t)
-(setq ido-enable-flex-matching t)
+(setopt ido-everywhere t)
+(setopt ido-enable-flex-matching t)
 
 ;; gptel
 ;; these additional models are still WIP, not functional yet
