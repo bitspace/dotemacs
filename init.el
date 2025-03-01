@@ -116,15 +116,14 @@
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
 
 ;; yaml-mode
-(use-package yaml-mode)
+(use-package yaml-mode
+  :hook (yaml-mode . (lambda ()
+                       (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+  )
 
 ;; handle .yaml and .yml files with yaml-mode
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
-;; smart indent yaml on ENTER
-(add-hook 'yaml-mode-hook
-          #'(lambda ()
-              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; soft wrap in text modes that are not programming languages
 (cjw/enable-visual-line-mode-on-hooks
