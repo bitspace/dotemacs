@@ -4,7 +4,7 @@
 ;; Author: Chris Woods <chris@bitspace.org>
 
 ;; load custom file early to set up `package-selected-packages'
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (and custom-file
            (file-exists-p custom-file))
   (load custom-file nil :nomessage))
@@ -17,13 +17,13 @@
 (add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
 ;; Load my utility functions
-(require 'cjw-utils)
+(use-package cjw-utils)
 
 ;; load technomancy's better-defaults
-(require 'better-defaults)
+(use-package better-defaults)
 
 ;; dired-x
-(require 'dired-x)
+(use-package dired-x)
 
 ;; lsp
 (use-package lsp-mode
@@ -33,18 +33,12 @@
 
 (use-package lsp-ui)
 
-;; github copilot
-(use-package copilot)
-(add-hook 'prog-mode-hook 'copilot-mode)
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-
 ;; use Emacs's pin entry
 (setenv "GPG_AGENT_INFO" nil)
 
 ;; set up auth source. The sources listed here should not be committed to a remote source control repo.
-(setq auth-sources
-      '((:source "~/.config/emacs/secrets/.authinfo.gpg")))
+(setopt auth-sources
+        '((:source "~/.config/emacs/secrets/.authinfo.gpg")))
 
 ;; numbered lines
 (setopt global-display-line-numbers-mode t)
@@ -53,16 +47,13 @@
 (setopt line-number-mode t)
 
 ;; restore the "legacy" way of navigating lines (not visual, but logical)
-(setq line-move-visual nil)
+(setopt line-move-visual nil)
 
 ;; double spaces at sentence end is for 90 year olds
-(setq sentence-end-double-space nil)
+(setopt sentence-end-double-space nil)
 
 ;; make switching windows easier.
 (global-set-key (kbd "M-o") 'other-window)
-
-;; Consider using `windmove', provides keybindings to move window focus in cardinal directions: S-<left>, S-<right>, S-<up>, S-<down> to switch windows by direction
-; (windmove-default-keybindings)
 
 ;; prettier underlines?
 (setopt x-underline-at-descent-line nil)
@@ -72,8 +63,8 @@
 (pixel-scroll-precision-mode)
 
 (set-face-attribute 'default nil
-                        :family "JetBrainsMono Nerd Font Mono"
-                        :height 140)
+                    :family "JetBrainsMono Nerd Font Mono"
+                    :height 140)
 
 (load-theme 'catppuccin :no-confirm)
 
@@ -95,7 +86,7 @@
                                "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
                                "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                "\\\\" "://" "ff" "fi" "ffi"))
-    ;; Enables ligature checks globally in all buffers. You can also do it
+  ;; Enables ligature checks globally in all buffers. You can also do it
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
@@ -109,7 +100,7 @@
   (which-key-mode))
 
 ;; enable isearch motion
-(setq isearch-allow-motion t)
+(setopt isearch-allow-motion t)
 
 ;; set some better options on the minibuffer
 (setopt enable-recursive-minibuffers t) ; use minibuffer while in minibuffer
@@ -125,15 +116,14 @@
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
 
 ;; yaml-mode
-(require 'yaml-mode)
+(use-package yaml-mode
+  :hook (yaml-mode . (lambda ()
+                       (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+  )
 
 ;; handle .yaml and .yml files with yaml-mode
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
-;; smart indent yaml on ENTER
-(add-hook 'yaml-mode-hook
-          #'(lambda ()
-             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; soft wrap in text modes that are not programming languages
 (cjw/enable-visual-line-mode-on-hooks
@@ -141,48 +131,47 @@
    org-mode-hook
    markdown-mode-hook))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq org-startup-indented t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package org
+  :ensure nil
+  :config
+  (setopt org-M-RET-may-split-line '((default . nil)))
+  (setopt org-insert-heading-respect-content t)
+  (setopt org-log-done 'time)
+  (setopt org-log-into-drawer t)
+  (setopt org-directory "~/Documents/metalmind")
+  (setopt org-agenda-files (list org-directory))
+  (setopt org-todo-keywords
+          '((sequence "TODO(t))" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
+  (setopt org-startup-indented t)
+  (setopt org-inlinetask-show-first-star t)
+  (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
+  (set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1)
+  (set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2)
+  (set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.3)
+  (set-face-attribute 'org-document-title nil :height 1.3 :foreground 'unspecified :inherit 'org-level-8)
+  (setopt org-cycle-level-faces nil)
+  (setopt org-n-level-faces 4)
+  (setopt org-hide-leading-stars t)
+  (setopt org-hide-emphasis-markers t)
+  (setopt org-confirm-babel-evaluate nil)
+  :hook (org-mode . (lambda ()
+                      (org-superstar-mode 1)
+                      (variable-pitch-mode 1)))
+  )
+
 
 ;; org-superstar
-(require 'org-superstar)
-
-;; Make org much nicer - see org-superstar-mode demo reel
-;; https://github.com/integral-dw/org-superstar-mode/blob/master/DEMO.org
-;;; Titles and Sections
-;; hide #+TITLE: - I actually don't want to, leaving commented for example
-                                        ;(setq org-hidden-keywords '(title))
-;; set basic title font
-(set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
-;; Low levels are unimportant => no scaling
-(set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
-;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
-(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.2) ;\large
-(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.44) ;\Large
-(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.728) ;\LARGE
-;; Only use the first 4 styles and do not cycle.
-(setq org-cycle-level-faces nil)
-(setq org-n-level-faces 4)
-;; Document Title
-(set-face-attribute 'org-document-title nil
-                    :height 1.4
-                    :foreground 'unspecified
-                    :inherit 'org-level-8)
-
-(add-hook 'org-mode-hook
-          (lambda ()
-            (org-superstar-mode 1)
-            (variable-pitch-mode 1)))
+(use-package org-superstar)
 
 ;; org inline tasks
-(require 'org-inlinetask)
-(setq org-inlinetask-show-first-star t)
-;; less gray
+(use-package org-inlinetask)
 (set-face-attribute 'org-inlinetask nil
                     :foreground 'unspecified
                     :inherit 'bold)
@@ -191,27 +180,14 @@
   (set-face-attribute 'org-superstar-item nil :height 1.2)
   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
   (set-face-attribute 'org-superstar-first nil :foreground "#0000e1"))
-;; Stop cycling bullets to emphasize hierarchy of headlines.
-(setq org-superstar-cycle-headline-bullets nil)
-;; hide leading things
-(setq org-hide-leading-stars t)
+(setopt org-superstar-cycle-headline-bullets nil)
 ;; Hide away leading stars on terminal
-(setq org-superstar-leading-fallback ?\s)
+(setopt org-superstar-leading-fallback ?\s)
 
 ;; Make org functions available across all of Emacs instead of just in an org-mode buffer
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
-
-;; TODO state keywords
-(setq org-todo-keywords
-      '((sequence "TODO" "IN PROGRESS" "|" "CANCELLED" "DEFERRED" "DONE")))
-
-;; hide emphasis symbols
-(setq org-hide-emphasis-markers t)
-
-;; org-babel: don't prompt for code evaluation confirmation
-(setq org-confirm-babel-evaluate nil)
 
 ;; org-babel: languages
 (org-babel-do-load-languages
@@ -222,7 +198,7 @@
 (delete-selection-mode 1)
 
 ;; xscheme for scheme evaluation operations
-(require 'xscheme)
+(use-package xscheme)
 
 ;; markdown-mode config
 (autoload 'markdown-mode "markdown-mode"
@@ -241,8 +217,32 @@
 ;; magit
 (use-package magit)
 (put 'upcase-region 'disabled nil)
+;; forge
+(with-eval-after-load 'magit
+  (use-package forge))
 
-;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico
+;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico.
+;; TBD: this vs. the other completion engines, especially with some new capability in Emacs 30.1?
 (ido-mode t)
-(setq ido-everywhere t)
-(setq ido-enable-flex-matching t)
+(setopt ido-everywhere t)
+(setopt ido-enable-flex-matching t)
+
+;; gptel
+;; these additional models are still WIP, not functional yet
+(gptel-make-gemini "Gemini"
+  :stream t)
+(gptel-make-perplexity "Perplexity"
+  :stream t)
+(gptel-make-anthropic "Anthropic"
+  :stream t)
+(gptel-make-openai "Groq"
+  :host "api.groq.com"
+  :endpoint "/openai/v1/chat/completions"
+  :stream t)
+(gptel-make-openai "GitHub Models"
+  :host "models.inference.ai.azure.com"
+  :endpoint "/chat/completions?api-version=2024-05-01-preview"
+  :stream t)
+(global-set-key (kbd "C-c RET") 'gptel-send)
+(add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+(add-hook 'gptel-post-response-hook 'gptel-end-of-response)
