@@ -171,11 +171,6 @@
 ;; org-superstar
 (use-package org-superstar)
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (org-superstar-mode 1)
-            (variable-pitch-mode 1)))
-
 ;; org inline tasks
 (use-package org-inlinetask)
 (set-face-attribute 'org-inlinetask nil
