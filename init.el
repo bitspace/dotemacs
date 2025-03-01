@@ -38,7 +38,7 @@
 
 ;; set up auth source. The sources listed here should not be committed to a remote source control repo.
 (setopt auth-sources
-      '((:source "~/.config/emacs/secrets/.authinfo.gpg")))
+        '((:source "~/.config/emacs/secrets/.authinfo.gpg")))
 
 ;; numbered lines
 (setopt global-display-line-numbers-mode t)
@@ -132,9 +132,9 @@
    org-mode-hook
    markdown-mode-hook))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package org
   :ensure nil
   :config
@@ -145,7 +145,7 @@
   (setopt org-directory "~/Documents/metalmind")
   (setopt org-agenda-files (list org-directory))
   (setopt org-todo-keywords
-        '((sequence "TODO(t))" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
+          '((sequence "TODO(t))" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
   (setopt org-startup-indented t)
   (setopt org-inlinetask-show-first-star t)
   (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
@@ -156,16 +156,15 @@
   (set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1)
   (set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2)
   (set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.3)
+  (set-face-attribute 'org-document-title nil :height 1.3 :foreground 'unspecified :inherit 'org-level-8)
   (setopt org-cycle-level-faces nil)
   (setopt org-n-level-faces 4)
-  ;; Document Title
-  (set-face-attribute 'org-document-title nil
-                      :height 1.3
-                      :foreground 'unspecified
-                      :inherit 'org-level-8)
   (setopt org-hide-leading-stars t)
   (setopt org-hide-emphasis-markers t)
   (setopt org-confirm-babel-evaluate nil)
+  :hook (org-mode . (lambda ()
+                      (org-superstar-mode 1)
+                      (variable-pitch-mode 1)))
   )
 
 
