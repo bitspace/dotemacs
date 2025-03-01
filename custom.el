@@ -3,9 +3,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files '("~/Documents/metalmind/prot-org-agenda-intro/tasks.org"))
  '(package-selected-packages
-   '(catppuccin-theme forge geiser-mit gptel helm ligature lsp-mode
-                      lsp-ui magit markdown-mode org-bullets
+   '(catppuccin-theme forge geiser-mit gptel helm keycast ligature
+                      lsp-mode lsp-ui magit markdown-mode org-bullets
                       org-contrib org-superstar projectile ripgrep
                       which-key whole-line-or-region)))
 (custom-set-faces

@@ -17,13 +17,13 @@
 (add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
 ;; Load my utility functions
-(require 'cjw-utils)
+(use-package cjw-utils)
 
 ;; load technomancy's better-defaults
-(require 'better-defaults)
+(use-package better-defaults)
 
 ;; dired-x
-(require 'dired-x)
+(use-package dired-x)
 
 ;; lsp
 (use-package lsp-mode
@@ -55,9 +55,6 @@
 ;; make switching windows easier.
 (global-set-key (kbd "M-o") 'other-window)
 
-;; Consider using `windmove', provides keybindings to move window focus in cardinal directions: S-<left>, S-<right>, S-<up>, S-<down> to switch windows by direction
-; (windmove-default-keybindings)
-
 ;; prettier underlines?
 (setopt x-underline-at-descent-line nil)
 (setopt switch-to-buffer-obey-display-actions t)
@@ -66,8 +63,8 @@
 (pixel-scroll-precision-mode)
 
 (set-face-attribute 'default nil
-                        :family "JetBrainsMono Nerd Font Mono"
-                        :height 140)
+                    :family "JetBrainsMono Nerd Font Mono"
+                    :height 140)
 
 (load-theme 'catppuccin :no-confirm)
 
@@ -89,7 +86,7 @@
                                "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
                                "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                "\\\\" "://" "ff" "fi" "ffi"))
-    ;; Enables ligature checks globally in all buffers. You can also do it
+  ;; Enables ligature checks globally in all buffers. You can also do it
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
@@ -119,7 +116,7 @@
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
 
 ;; yaml-mode
-(require 'yaml-mode)
+(use-package yaml-mode)
 
 ;; handle .yaml and .yml files with yaml-mode
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
@@ -127,7 +124,7 @@
 ;; smart indent yaml on ENTER
 (add-hook 'yaml-mode-hook
           #'(lambda ()
-             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; soft wrap in text modes that are not programming languages
 (cjw/enable-visual-line-mode-on-hooks
@@ -138,26 +135,42 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq org-startup-indented t)
+(use-package org
+  :ensure nil
+  :config
+  (setq org-M-RET-may-split-line '((default . nil)))
+  (setq org-insert-heading-respect-content t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-directory "~/Documents/metalmind")
+  (setq org-agenda-files (list org-directory))
+  (setq org-todo-keywords
+        '((sequence "TODO(t))" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
+  (setq org-startup-indented t)
+  (setq org-inlinetask-show-first-star t)
+  (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
+  (set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1)
+  (set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2)
+  (set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.3)
+  (setq org-cycle-level-faces nil)
+  (setq org-n-level-faces 4)
+  ;; Document Title
+  (set-face-attribute 'org-document-title nil
+                      :height 1.3
+                      :foreground 'unspecified
+                      :inherit 'org-level-8)
+  (setq org-hide-leading-stars t)
+  (setq org-hide-emphasis-markers t)
+  (setq org-confirm-babel-evaluate nil)
+  )
+
 
 ;; org-superstar
-(require 'org-superstar)
-
-(set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
-(set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
-(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1)
-(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2)
-(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.3)
-(setq org-cycle-level-faces nil)
-(setq org-n-level-faces 4)
-;; Document Title
-(set-face-attribute 'org-document-title nil
-                    :height 1.3
-                    :foreground 'unspecified
-                    :inherit 'org-level-8)
+(use-package org-superstar)
 
 (add-hook 'org-mode-hook
           (lambda ()
@@ -165,8 +178,7 @@
             (variable-pitch-mode 1)))
 
 ;; org inline tasks
-(require 'org-inlinetask)
-(setq org-inlinetask-show-first-star t)
+(use-package org-inlinetask)
 (set-face-attribute 'org-inlinetask nil
                     :foreground 'unspecified
                     :inherit 'bold)
@@ -176,8 +188,6 @@
   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
   (set-face-attribute 'org-superstar-first nil :foreground "#0000e1"))
 (setq org-superstar-cycle-headline-bullets nil)
-;; hide leading things
-(setq org-hide-leading-stars t)
 ;; Hide away leading stars on terminal
 (setq org-superstar-leading-fallback ?\s)
 
@@ -185,16 +195,6 @@
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
-
-;; TODO state keywords
-(setq org-todo-keywords
-      '((sequence "TODO" "IN PROGRESS" "|" "CANCELLED" "DEFERRED" "DONE")))
-
-;; hide emphasis symbols
-(setq org-hide-emphasis-markers t)
-
-;; org-babel: don't prompt for code evaluation confirmation
-(setq org-confirm-babel-evaluate nil)
 
 ;; org-babel: languages
 (org-babel-do-load-languages
@@ -205,7 +205,7 @@
 (delete-selection-mode 1)
 
 ;; xscheme for scheme evaluation operations
-(require 'xscheme)
+(use-package xscheme)
 
 ;; markdown-mode config
 (autoload 'markdown-mode "markdown-mode"
@@ -226,7 +226,7 @@
 (put 'upcase-region 'disabled nil)
 ;; forge
 (with-eval-after-load 'magit
-  (require 'forge))
+  (use-package forge))
 
 ;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico.
 ;; TBD: this vs. the other completion engines, especially with some new capability in Emacs 30.1?
