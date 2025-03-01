@@ -224,6 +224,9 @@
 ;; magit
 (use-package magit)
 (put 'upcase-region 'disabled nil)
+;; forge
+(with-eval-after-load 'magit
+  (require 'forge))
 
 ;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico.
 ;; TBD: this vs. the other completion engines, especially with some new capability in Emacs 30.1?

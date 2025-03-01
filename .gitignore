@@ -14,4 +14,4 @@ bookmarks
 projectile-bookmarks.eld
 tramp
 projects
-
+*.sqlite
