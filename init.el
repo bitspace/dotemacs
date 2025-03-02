@@ -213,10 +213,13 @@
 ;; projectile
 (projectile-mode 1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(setopt projectile-sort-order 'recently-active)
+(setopt projectile-enable-caching t)
+(setopt projectile-enable-caching 'persistent)
 
 ;; magit
 (use-package magit)
-(put 'upcase-region 'disabled nil)
+
 ;; forge
 (with-eval-after-load 'magit
   (use-package forge))
@@ -226,6 +229,26 @@
 (ido-mode t)
 (setopt ido-everywhere t)
 (setopt ido-enable-flex-matching t)
+
+;; allow upcase-region
+(put 'upcase-region 'disabled nil)
+
+;; ediff
+(setopt ediff-split-window-function 'split-window-horizontally)
+(setopt ediff-keep-variants nil)
+(setopt ediff-window-setup-function 'ediff-setup-windows-plain)
+(setopt ediff-diff-options "-w")
+
+;; verb http client prefix keymapping
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+
+;; auto-insert
+(require 'autoinsert)
+(setq auto-insert-directory (concat user-emacs-directory "snippets"))
+(add-to-list 'auto-insert-alist
+             '(org-mode . "template.org"))
+(auto-insert-mode t)
 
 ;; gptel
 ;; these additional models are still WIP, not functional yet
