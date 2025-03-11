@@ -3,12 +3,20 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files '("~/Documents/metalmind/prot-org-agenda-intro/tasks.org"))
+ '(org-agenda-files
+   '("~/Documents/metalmind/work/hyprland-setup.org"
+     "/home/chris/Documents/metalmind/README.org"
+     "/home/chris/Documents/metalmind/capture.org"
+     "/home/chris/Documents/metalmind/projects.org"
+     "/home/chris/Documents/metalmind/tasks.org"))
  '(package-selected-packages
-   '(catppuccin-theme forge geiser-mit gptel helm keycast ligature
-                      lsp-mode lsp-ui magit markdown-mode org-bullets
-                      org-contrib org-superstar projectile ripgrep
-                      which-key whole-line-or-region)))
+   '(catppuccin-theme company dap-mode flycheck forge geiser-mit gptel
+                      helm helm-lsp json-mode keycast ligature
+                      lsp-mode lsp-treemacs lsp-ui magit markdown-mode
+                      nerd-icons org-bullets org-contrib org-superstar
+                      projectile ripgrep treemacs treemacs-icons-dired
+                      treemacs-magit treemacs-projectile which-key
+                      whole-line-or-region)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

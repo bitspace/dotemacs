@@ -15,3 +15,6 @@ projectile-bookmarks.eld
 tramp
 projects
 *.sqlite
+multisession/
+.lsp-session-v1
+.org-id-locations
