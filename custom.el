@@ -12,11 +12,12 @@
  '(package-selected-packages
    '(catppuccin-theme company dap-mode flycheck forge geiser-mit gptel
                       helm helm-lsp json-mode keycast ligature
-                      lsp-mode lsp-treemacs lsp-ui magit markdown-mode
-                      nerd-icons org-bullets org-contrib org-superstar
-                      projectile ripgrep treemacs treemacs-icons-dired
-                      treemacs-magit treemacs-projectile which-key
-                      whole-line-or-region)))
+                      lsp-java lsp-mode lsp-treemacs lsp-ui magit
+                      markdown-mode nerd-icons org-bullets org-contrib
+                      org-superstar projectile ripgrep treemacs
+                      treemacs-icons-dired treemacs-magit
+                      treemacs-projectile which-key
+                      whole-line-or-region yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

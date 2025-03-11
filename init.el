@@ -1,7 +1,13 @@
 ;; init.el --- core Emacs configuration and initialization -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; My Emacs init file
+
 ;; Copyright © 2025
 ;; SPDX-License-Identifier: Unlicense
 ;; Author: Chris Woods <chris@bitspace.org>
+
+;;; Code:
 
 ;; load custom file early to set up `package-selected-packages'
 (setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -241,11 +247,9 @@
 (with-eval-after-load 'magit
   (use-package forge))
 
-;; ido. better-defaults doesn't enable this concurrently with other completion engines like helm, ivy, fido, or vertico.
-;; TBD: this vs. the other completion engines, especially with some new capability in Emacs 30.1?
-(ido-mode t)
-(setopt ido-everywhere t)
-(setopt ido-enable-flex-matching t)
+;; helm
+(require 'helm)
+(helm-mode 1)
 
 ;; allow upcase-region
 (put 'upcase-region 'disabled nil)
@@ -272,6 +276,11 @@
 
 ;; company
 (add-hook 'after-init-hook 'global-company-mode)
+
+;; yasnippet
+(use-package yasnippet
+  :config
+  (yas-global-mode))
 
 ;; treemacs
 (use-package treemacs
@@ -306,7 +315,11 @@
   :init
   (setq lsp-keymap-prefix "C-c C-l")
   :hook
+  (dockerfile-ts-mode . lsp)
+  (html-mode . lsp)
   (java-mode . lsp)
+  (json-mode . lsp)
+  (markdown-mode . lsp)
   (python-mode . lsp)
   (sh-mode . lsp)
   :commands lsp)
@@ -318,6 +331,15 @@
 (lsp-treemacs-sync-mode 1)
 
 (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol)
+
+;; dap
+(use-package dap-mode
+  :after
+  lsp-mode
+  :config
+  (dap-auto-configure-mode))
+
+(use-package dap-java :ensure nil)
 
 ;; which-key shows keybinding completions
 (use-package which-key
@@ -344,3 +366,6 @@
 (global-set-key (kbd "C-c RET") 'gptel-send)
 (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
 (add-hook 'gptel-post-response-hook 'gptel-end-of-response)
+
+(provide 'init)
+;;; init.el ends here
