@@ -25,14 +25,6 @@
 ;; dired-x
 (use-package dired-x)
 
-;; lsp
-(use-package lsp-mode
-  :commands lsp
-  :hook
-  (sh-mode . lsp))
-
-(use-package lsp-ui)
-
 ;; use Emacs's pin entry
 (setenv "GPG_AGENT_INFO" nil)
 
@@ -55,6 +47,9 @@
 ;; make switching windows easier.
 (global-set-key (kbd "M-o") 'other-window)
 
+;; browse url
+(global-set-key (kbd "C-c u") 'browse-url)
+
 ;; prettier underlines?
 (setopt x-underline-at-descent-line nil)
 (setopt switch-to-buffer-obey-display-actions t)
@@ -62,9 +57,19 @@
 (setopt indicate-buffer-boundaries 'left)
 (pixel-scroll-precision-mode)
 
+;; default fixed font
 (set-face-attribute 'default nil
                     :family "JetBrainsMono Nerd Font Mono"
                     :height 140)
+
+;; emoji font
+(set-fontset-font t '(#x1f000 . #x1faff)
+                  (font-spec :family "Noto Color Emoji"))
+
+;; nerd icons
+(use-package nerd-icons
+  :custom
+  (nerd-icons-font-family "Symbols Nerd Font Mono"))
 
 (load-theme 'catppuccin :no-confirm)
 
@@ -125,6 +130,10 @@
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 
+;; json and jsonc
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.jsonc\\'" . jsonc-mode))
+
 ;; soft wrap in text modes that are not programming languages
 (cjw/enable-visual-line-mode-on-hooks
  '(text-mode-hook
@@ -143,8 +152,11 @@
   (setopt org-log-into-drawer t)
   (setopt org-directory "~/Documents/metalmind")
   (setopt org-agenda-files (list org-directory))
+  (setopt org-refile-targets
+      '((nil :maxlevel . 3)
+        (org-agenda-files :maxlevel . 3)))
   (setopt org-todo-keywords
-          '((sequence "TODO(t))" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
+          '((sequence "TODO(t)" "STARTED(s!)" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
   (setopt org-startup-indented t)
   (setopt org-inlinetask-show-first-star t)
   (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
@@ -152,9 +164,6 @@
   (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
   (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
   (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
-  (set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1)
-  (set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2)
-  (set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.3)
   (set-face-attribute 'org-document-title nil :height 1.3 :foreground 'unspecified :inherit 'org-level-8)
   (setopt org-cycle-level-faces nil)
   (setopt org-n-level-faces 4)
@@ -162,10 +171,24 @@
   (setopt org-hide-emphasis-markers t)
   (setopt org-confirm-babel-evaluate nil)
   :hook (org-mode . (lambda ()
-                      (org-superstar-mode 1)
-                      (variable-pitch-mode 1)))
-  )
+                      (org-superstar-mode 1))))
 
+(setq org-capture-templates
+      '(("n" "Note" entry
+         (file+headline "~/Documents/metalmind/capture.org" "Intake")
+         "* %?\n  %i\n  %a\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n  :TAGS: :note:")
+        ("t" "Task" entry
+         (file+headline "~/Documents/metalmind/tasks.org" "Tasks")
+         "** TODO %?\n  %i\n  %a\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n  :TAGS: :task:")
+        ("p" "Project Idea" entry
+         (file+headline "~/Documents/metalmind/projects.org" "Project Ideas")
+         "** %?\n  - Description:\n  %i\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n  :TAGS: :project_idea:")
+        ("v" "Travel Plan" entry
+         (file+headline "~/Documents/metalmind/travel/intake.org" "Travel Plans")
+         "** %?\n  - Destination: %^{Destination}\n  - Dates: %^{Dates}\n  %i\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n  :TAGS: :travel:")
+        ("l" "Leisure Note" entry
+         (file+headline "~/Documents/metalmind/leisure/intake.org" "Leisure")
+         "** %?\n  %i\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n  :TAGS: :leisure:")))
 
 ;; org-superstar
 (use-package org-superstar)
@@ -249,6 +272,53 @@
 (add-to-list 'auto-insert-alist
              '(org-mode . "template.org"))
 (auto-insert-mode t)
+
+;; flycheck
+(global-flycheck-mode +1)
+
+;; company
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; treemacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :bind
+  (:map global-map
+        ("M-0" . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t d"   . treemacs-select-directory)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+
+(treemacs-start-on-boot)
+
+;; lsp
+(use-package lsp-mode
+  :commands lsp
+  :hook
+  (sh-mode . lsp))
+
+(use-package lsp-ui)
+
+(lsp-treemacs-sync-mode 1)
+
+(define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol)
+
 
 ;; gptel
 ;; these additional models are still WIP, not functional yet
