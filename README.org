@@ -1,4 +1,6 @@
 * Emacs config
 This is a work in progress, as always. It is yet another fresh start after yet another Emacs bankruptcy, followed by around 18 months without using Emacs at all. I use Linux and macOS extensively. I also have to use Windows periodically, and having a good Emacs environment in that swamp makes it a little less odious.
 
-I'm going to tackle this from a literate programming perspective early on. I think this aligns with how we've been starting to interact with large language models via natural language. It is very common for me to be interacting with a model, either via chatbot UI or in a code context, and to need to inject code snippets in the midst of natural language, often with the expectation that the code is able to be executed in some context.
+** TODO
+- Modularize. It's growing into a mess.
+- Go with a literate style using org-tangle. I think this aligns with how we've been starting to interact with large language models via natural language. It is very common for me to be interacting with a model, either via chatbot UI or in a code context, and to need to inject code snippets in the midst of natural language, often with the expectation that the code is able to be executed in some context.
