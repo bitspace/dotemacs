@@ -98,12 +98,6 @@
 ;; auto-match pairs (brackets, braces, parens, etc)
 (electric-pair-mode 1)
 
-;; which-key shows keybinding completions
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
-
 ;; enable isearch motion
 (setopt isearch-allow-motion t)
 
@@ -309,16 +303,27 @@
 
 ;; lsp
 (use-package lsp-mode
-  :commands lsp
+  :init
+  (setq lsp-keymap-prefix "C-c C-l")
   :hook
-  (sh-mode . lsp))
+  (java-mode . lsp)
+  (python-mode . lsp)
+  (sh-mode . lsp)
+  :commands lsp)
 
-(use-package lsp-ui)
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 (lsp-treemacs-sync-mode 1)
 
 (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol)
 
+;; which-key shows keybinding completions
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 
 ;; gptel
 ;; these additional models are still WIP, not functional yet
