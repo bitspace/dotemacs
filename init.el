@@ -56,13 +56,6 @@
 ;; browse url
 (global-set-key (kbd "C-c u") 'browse-url)
 
-;; prettier underlines?
-(setopt x-underline-at-descent-line nil)
-(setopt switch-to-buffer-obey-display-actions t)
-(setopt show-trailing-whitespace nil)
-(setopt indicate-buffer-boundaries 'left)
-(pixel-scroll-precision-mode)
-
 ;; default fixed font
 (set-face-attribute 'default nil
                     :family "JetBrainsMono Nerd Font Mono"
