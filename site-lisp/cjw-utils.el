@@ -1,19 +1,22 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Utility functions
-;; At some point this is likely to grow somewhat unwieldy and I'll want to modularize
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; cjw-utils.el --- core Emacs configuration and initialization -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; A collection of utility functions
 
-;; convert a markdown style link to an org style link
+;; Copyright © 2025
+;; SPDX-License-Identifier: Unlicense
+;; Author: Chris Woods <chris@bitspace.org>
+
+;;; Code:
+
 (defun cjw/convert-markdown-link-to-org ()
-  "Convert a markdown style hyperlink to an org-mode style hyperlink in the current line."
+  "Convert a markdown style hyperlink to an `org-mode' style hyperlink in the current line."
   (interactive)
   (save-excursion
     (beginning-of-line)
     (while (re-search-forward "\\[\\(.*?\\)\\](\\(https://[^)]+\\))" (line-end-position) t)
       (replace-match "[[\\2][\\1]]"))))
 
-;; compress repeated blank lines into one
 (defun cjw/compress-blank-lines ()
   "Replace multiple blank lines with a single blank line throughout the buffer."
   (interactive)
@@ -24,14 +27,12 @@
       ;; replace them with a single newline
       (replace-match "\\1"))))
 
-;; Wrapper for visual-line-mode. Additional file types can be added here.
 (defun cjw/enable-visual-line-mode-on-hooks (hooks)
-  "Enable visual-line-mode for each mode specified in HOOKS."
+  "Enable `visual-line-mode' for each mode specified in HOOKS."
   (dolist (hook hooks)
     (add-hook hook 'visual-line-mode)))
 
-;; a sudo function
-(defun sudo()
+(defun cjw/sudo ()
   "Use TRAMP to `sudo' the current buffer."
   (interactive)
   (when buffer-file-name
@@ -40,10 +41,11 @@
              buffer-file-name))))
 
 (defun cjw/eval-and-run-all-tests-in-buffer ()
-  "Deletes all loaded tests from the runtime, evaluates the current buffer and runs all loaded tests with ert."
+  "Deletes all loaded tests from the runtime, evaluates the current buffer and runs all loaded tests with `ert'."
   (interactive)
   (ert-delete-all-tests)
   (eval-buffer)
   (ert 't))
 
 (provide 'cjw-utils)
+;;; cjw-utils.el ends here
