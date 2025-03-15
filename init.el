@@ -53,13 +53,16 @@
 ;; make switching windows easier.
 (global-set-key (kbd "M-o") 'other-window)
 
+;; indent region
+(global-set-key (kbd "C-c i") 'indent-region)
+
 ;; browse url
 (global-set-key (kbd "C-c u") 'browse-url)
 
 ;; default fixed font
 (set-face-attribute 'default nil
                     :family "JetBrainsMono Nerd Font Mono"
-                    :height 140)
+                    :height 160)
 
 ;; emoji font
 (set-fontset-font t '(#x1f000 . #x1faff)
@@ -340,23 +343,53 @@
   :config
   (which-key-mode))
 
-;; gptel
-;; these additional models are still WIP, not functional yet
+;; eat-eshell-mode hook
+(add-hook 'eshell-load-hook #'eat-eshell-mode)
+;; An alternative - run visual commands with Eat instead of term
+;; (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
+
+;;; gptel
+;; gemini
 (gptel-make-gemini "Gemini"
+  :key (gptel-api-key-from-auth-source "generativelanguage.googleapis.com" "apikey")
   :stream t)
+;; perplexity
 (gptel-make-perplexity "Perplexity"
+  :key (gptel-api-key-from-auth-source "api.perplexity.ai" "apikey")
   :stream t)
+;; anthropic/claude
 (gptel-make-anthropic "Anthropic"
+  :key (gptel-api-key-from-auth-source "api.anthropic.com" "apikey")
   :stream t)
+;; groq
 (gptel-make-openai "Groq"
   :host "api.groq.com"
   :endpoint "/openai/v1/chat/completions"
-  :stream t)
-(gptel-make-openai "GitHub Models"
+  :stream t
+  :key (gptel-api-key-from-auth-source "api.groq.com" "apikey")
+  :models '(mixtral-8x7b-32768
+            llama-3.3-70b-versatile))
+;; togetherai
+(gptel-make-openai "TogetherAI"
+  :host "api.together.xyz"
+  :key (gptel-api-key-from-auth-source "api.together.xyz" "apikey")
+  :stream t
+  :models '(mistralai/Mixtral-8x7B-Instruct-v0.1
+            codellama/CodeLlama-13b-Instruct-hf
+            codellama/CodeLlama-34b-Instruct-hf))
+;; github models
+(gptel-make-openai "Github Models"
   :host "models.inference.ai.azure.com"
-  :endpoint "/chat/completions?api-version=2024-05-01-preview"
-  :stream t)
-(global-set-key (kbd "C-c RET") 'gptel-send)
+  :endpoint "/chat/completions"
+  :stream t
+  :key (gptel-api-key-from-auth-source "models.inference.ai.azure.com" "apikey")
+  :models '(gpt-4o))
+;; ollama
+(gptel-make-ollama "Ollama"
+  :host "localhost:11434"
+  :stream t
+  :models '(gemma3:latest))
+
 (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
 (add-hook 'gptel-post-response-hook 'gptel-end-of-response)
 
