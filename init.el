@@ -25,8 +25,49 @@
 ;; Load my utility functions
 (use-package cjw-utils)
 
-;; load technomancy's better-defaults
-(use-package better-defaults)
+;;; Extracted a bunch of stuff from technomancy's better-defaults.
+
+;; Clean up some superfluous UI components
+(unless (memq window-system '(mac ns))
+  (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
+(when (fboundp 'horizontal-scroll-bar-mode)
+  (horizontal-scroll-bar-mode -1))
+
+;; utility to make unique buffer names
+(require 'uniquify)
+(setopt uniquify-buffer-name-style 'forward)
+
+;; remember where I was in any previously-visited file
+(save-place-mode 1)
+
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+
+(show-paren-mode 1)
+(setq-default indent-tabs-mode nil)
+(savehist-mode 1)
+
+(setopt save-interprogram-paste-before-kill t
+        apropos-do-all t
+        mouse-yank-at-point t
+        require-final-newline t
+        visible-bell t
+        load-prefer-newer t
+        backup-by-copying t
+        frame-inhibit-implied-resize t
+        read-file-name-completion-ignore-case t
+        read-buffer-completion-ignore-case t
+        completion-ignore-case t
+        ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(unless backup-directory-alist
+  (setopt backup-directory-alist `(("." . ,(concat user-emacs-directory "backups")))))
 
 ;; dired-x
 (use-package dired-x)
@@ -149,8 +190,8 @@
   (setopt org-directory "~/Documents/metalmind")
   (setopt org-agenda-files (list org-directory))
   (setopt org-refile-targets
-      '((nil :maxlevel . 3)
-        (org-agenda-files :maxlevel . 3)))
+          '((nil :maxlevel . 3)
+            (org-agenda-files :maxlevel . 3)))
   (setopt org-todo-keywords
           '((sequence "TODO(t)" "STARTED(s!)" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
   (setopt org-startup-indented t)
