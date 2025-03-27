@@ -24,6 +24,18 @@
 (defvar cjw-package-update-days 1
   "Threshold in days beyond when a package archive is considered stale.")
 
+;; Define the base directory containing your modules
+(let ((modules-root-dir (expand-file-name "modules" user-emacs-directory)))
+  ;; Ensure the modules directory exists
+  (when (file-directory-p modules-root-dir)
+    ;; Find all .el or .elc files recursively within the modules directory
+    (let ((lisp-files (directory-files-recursively modules-root-dir "\\.elc?$")))
+      ;; For each found file, add its directory to the load-path
+      (dolist (file lisp-files)
+        ;; `file-name-directory` extracts the directory part of the path
+        ;; `add-to-list` handles duplicates
+        (add-to-list 'load-path (file-name-directory file))))))
+
 (defun cjw-package-archive-stale-p (archive)
   "Return t if ARCHIVE is stale.
 

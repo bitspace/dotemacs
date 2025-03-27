@@ -19,9 +19,6 @@
 (if (memq system-type '(darwin windows-nt))
     (server-start))
 
-;; Add my local lisp directory to load-path
-(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
-
 ;; Load my utility functions
 (use-package cjw-utils)
 
@@ -36,7 +33,7 @@
 (keymap-global-unset "C-x C-v")
 
 ;; utility to make unique buffer names
-(require 'uniquify)
+(use-package uniquify)
 (setopt uniquify-buffer-name-style 'forward)
 
 ;; remember where I was in any previously-visited file
@@ -171,7 +168,7 @@
 (add-to-list 'auto-mode-alist '("\\.jsonc\\'" . jsonc-mode))
 
 ;; soft wrap in text modes that are not programming languages
-(cjw/enable-visual-line-mode-on-hooks
+(cjw-enable-visual-line-mode-on-hooks
  '(text-mode-hook
    org-mode-hook
    markdown-mode-hook))
@@ -284,7 +281,7 @@
   (use-package forge))
 
 ;; helm
-(require 'helm)
+(use-package helm)
 (helm-mode 1)
 
 ;; allow upcase-region
@@ -301,7 +298,7 @@
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 
 ;; auto-insert
-(require 'autoinsert)
+(use-package autoinsert)
 (setq auto-insert-directory (concat user-emacs-directory "snippets"))
 (add-to-list 'auto-insert-alist
              '(org-mode . "template.org"))
