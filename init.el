@@ -19,26 +19,21 @@
 (if (memq system-type '(darwin windows-nt))
     (server-start))
 
-;; Add my local lisp directory to load-path
-(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
-
 ;; Load my utility functions
 (use-package cjw-utils)
 
-;;; Extracted a bunch of stuff from technomancy's better-defaults.
+;; some Emacs packages consult `user-email-address'
+(setq user-mail-address "chris@bitspace.org")
 
-;; Clean up some superfluous UI components
-(unless (memq window-system '(mac ns))
-  (menu-bar-mode -1))
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode)
-  (scroll-bar-mode -1))
-(when (fboundp 'horizontal-scroll-bar-mode)
-  (horizontal-scroll-bar-mode -1))
+;; coding system when using the clipboard
+(setopt selection-coding-system 'utf-8)
+
+;; unset `C-x C-v' which is bound by default to `find-alternate-file'.
+;; unbinding it frees it up to be a prefix if desired.
+(keymap-global-unset "C-x C-v")
 
 ;; utility to make unique buffer names
-(require 'uniquify)
+(use-package uniquify)
 (setopt uniquify-buffer-name-style 'forward)
 
 ;; remember where I was in any previously-visited file
@@ -73,7 +68,8 @@
 (use-package dired-x)
 
 ;; use Emacs's pin entry
-(setenv "GPG_AGENT_INFO" nil)
+;; or don't. I think I would rather use KDE's, or better, some 1Password integration
+;; (setenv "GPG_AGENT_INFO" nil)
 
 ;; set up auth source. The sources listed here should not be committed to a remote source control repo.
 (setopt auth-sources
@@ -172,7 +168,7 @@
 (add-to-list 'auto-mode-alist '("\\.jsonc\\'" . jsonc-mode))
 
 ;; soft wrap in text modes that are not programming languages
-(cjw/enable-visual-line-mode-on-hooks
+(cjw-enable-visual-line-mode-on-hooks
  '(text-mode-hook
    org-mode-hook
    markdown-mode-hook))
@@ -285,7 +281,7 @@
   (use-package forge))
 
 ;; helm
-(require 'helm)
+(use-package helm)
 (helm-mode 1)
 
 ;; allow upcase-region
@@ -302,7 +298,7 @@
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 
 ;; auto-insert
-(require 'autoinsert)
+(use-package autoinsert)
 (setq auto-insert-directory (concat user-emacs-directory "snippets"))
 (add-to-list 'auto-insert-alist
              '(org-mode . "template.org"))
@@ -386,22 +382,33 @@
 
 ;; eat-eshell-mode hook
 (add-hook 'eshell-load-hook #'eat-eshell-mode)
+
 ;; An alternative - run visual commands with Eat instead of term
 ;; (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
 
-;;; gptel
-;; gemini
-(gptel-make-gemini "Gemini"
-  :key (gptel-api-key-from-auth-source "generativelanguage.googleapis.com" "apikey")
-  :stream t)
+;;;; gptel
+
+;; bind for `gptel-send' everywhere in Emacs
+(global-set-key (kbd "C-c RET") 'gptel-send)
+
+;;; set up model integrations
+
+;; gemini, and make the default
+(setq
+ gptel-model 'gemini-pro
+ gptel-backend (gptel-make-gemini "Gemini"
+                 :key (gptel-api-key-from-auth-source "generativelanguage.googleapis.com" "apikey")
+                 :stream t))
 ;; perplexity
 (gptel-make-perplexity "Perplexity"
   :key (gptel-api-key-from-auth-source "api.perplexity.ai" "apikey")
   :stream t)
+
 ;; anthropic/claude
 (gptel-make-anthropic "Anthropic"
   :key (gptel-api-key-from-auth-source "api.anthropic.com" "apikey")
   :stream t)
+
 ;; groq
 (gptel-make-openai "Groq"
   :host "api.groq.com"
@@ -410,6 +417,7 @@
   :key (gptel-api-key-from-auth-source "api.groq.com" "apikey")
   :models '(mixtral-8x7b-32768
             llama-3.3-70b-versatile))
+
 ;; togetherai
 (gptel-make-openai "TogetherAI"
   :host "api.together.xyz"
@@ -418,6 +426,7 @@
   :models '(mistralai/Mixtral-8x7B-Instruct-v0.1
             codellama/CodeLlama-13b-Instruct-hf
             codellama/CodeLlama-34b-Instruct-hf))
+
 ;; github models
 (gptel-make-openai "Github Models"
   :host "models.inference.ai.azure.com"
@@ -425,6 +434,7 @@
   :stream t
   :key (gptel-api-key-from-auth-source "models.inference.ai.azure.com" "apikey")
   :models '(gpt-4o))
+
 ;; ollama
 (gptel-make-ollama "Ollama"
   :host "localhost:11434"
