@@ -28,6 +28,10 @@
 ;; coding system when using the clipboard
 (setopt selection-coding-system 'utf-8)
 
+;; regex style for re-builder
+(require 're-builder)
+(setopt reb-re-syntax 'string)
+
 ;; unset `C-x C-v' which is bound by default to `find-alternate-file'.
 ;; unbinding it frees it up to be a prefix if desired.
 (keymap-global-unset "C-x C-v")
@@ -66,10 +70,6 @@
 
 ;; dired-x
 (use-package dired-x)
-
-;; use Emacs's pin entry
-;; or don't. I think I would rather use KDE's, or better, some 1Password integration
-;; (setenv "GPG_AGENT_INFO" nil)
 
 ;; set up auth source. The sources listed here should not be committed to a remote source control repo.
 (setopt auth-sources
