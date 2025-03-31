@@ -84,6 +84,10 @@
 ;; restore the "legacy" way of navigating lines (not visual, but logical)
 (setopt line-move-visual nil)
 
+;; some scrolling options with potential for improved UX
+(setopt scroll-conservatively 10
+        scroll-margin 15)
+
 ;; double spaces at sentence end is for 90 year olds
 (setopt sentence-end-double-space nil)
 
