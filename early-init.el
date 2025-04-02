@@ -18,28 +18,18 @@
 
 (require 'time-date)
 
-(defvar cjw-package-perform-stale-archive-check t
+(defvar cjw-package-perform-stale-archive-check-p t
   "Check if any package archives are stale.")
 
 (defvar cjw-package-update-days 1
   "Threshold in days beyond when a package archive is considered stale.")
 
-;; Define the base directory containing your modules
-(let ((modules-root-dir (expand-file-name "modules" user-emacs-directory)))
-  ;; Ensure the modules directory exists
-  (when (file-directory-p modules-root-dir)
-    ;; Find all .el or .elc files recursively within the modules directory
-    (let ((lisp-files (directory-files-recursively modules-root-dir "\\.elc?$")))
-      ;; For each found file, add its directory to the load-path
-      (dolist (file lisp-files)
-        ;; `file-name-directory` extracts the directory part of the path
-        ;; `add-to-list` handles duplicates
-        (add-to-list 'load-path (file-name-directory file))))))
+(add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
 
 (defun cjw-package-archive-stale-p (archive)
   "Return t if ARCHIVE is stale.
 
-ARCHIVE is stale if the on-disk cache is older than `cjw-package-update-days' old. If `cjw-package-perform-stale-archive-check' is nil, then check is skipped."
+ARCHIVE is stale if the on-disk cache is older than `cjw-package-update-days' old. If `cjw-package-perform-stale-archive-check-p' is nil, then check is skipped."
   (let* ((today (decode-time nil nil t))
          (archive-name (expand-file-name
                         (format "archives/%s/archive-contents" archive)
@@ -47,7 +37,7 @@ ARCHIVE is stale if the on-disk cache is older than `cjw-package-update-days' ol
          (last-update-time (decode-time (file-attribute-modification-time
                                          (file-attributes archive-name))))
          (delta (make-decoded-time :day cjw-package-update-days)))
-    (when cjw-package-perform-stale-archive-check
+    (when cjw-package-perform-stale-archive-check-p
       (time-less-p (encode-time (decoded-time-add last-update-time delta))
                    (encode-time today)))))
 
