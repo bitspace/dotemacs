@@ -11,12 +11,13 @@
      "/home/chris/Documents/metalmind/tasks.org"))
  '(package-selected-packages
    '(catppuccin-theme company dap-mode eat flycheck forge geiser-mit
-                      gptel helm helm-lsp json-mode keycast ligature
-                      lsp-java lsp-mode lsp-treemacs lsp-ui magit
-                      markdown-mode nerd-icons org-bullets org-contrib
-                      org-superstar projectile quelpa ripgrep treemacs
+                      gptel helm helm-lsp helpful json-mode keycast
+                      ligature link-hint lsp-java lsp-mode
+                      lsp-treemacs lsp-ui magit markdown-mode mwim
+                      nerd-icons org-bullets org-contrib org-superstar
+                      projectile quelpa ripgrep treemacs
                       treemacs-icons-dired treemacs-magit
-                      treemacs-projectile which-key
+                      treemacs-projectile unfill which-key
                       whole-line-or-region yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

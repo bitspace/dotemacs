@@ -72,6 +72,7 @@
 (global-set-key (kbd "C-c i") 'indent-region)
 
 ;; browse url
+(setq browse-url-browser-function 'browse-url-chromium)
 (global-set-key (kbd "C-c u") 'browse-url)
 
 ;; enable isearch motion
@@ -87,6 +88,24 @@
 
 ;; allow upcase-region
 (put 'upcase-region 'disabled nil)
+
+;; mwim - move where i mean
+(global-set-key (kbd "C-a") 'mwim-beginning)
+(global-set-key (kbd "C-e") 'mwim-end)
+
+;; replace default info/help keys with helpful
+(global-set-key (kbd "C-h f") #'helpful-callable)
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h x") #'helpful-command)
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+(global-set-key (kbd "C-h f") #'helpful-function)
+
+(use-package link-hint
+  :ensure t
+  :bind
+  ("C-c l o" . link-hint-open-link)
+  ("C-c l c" . link-hint-copy-link))
 
 (provide 'core)
 ;;; core.el ends here
