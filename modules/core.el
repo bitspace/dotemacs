@@ -45,8 +45,6 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
-(savehist-mode 1)
-
 (setopt save-interprogram-paste-before-kill t
         apropos-do-all t
         load-prefer-newer t
@@ -72,7 +70,7 @@
 (global-set-key (kbd "C-c i") 'indent-region)
 
 ;; browse url
-(setq browse-url-browser-function 'browse-url-chrome)
+;; (setq browse-url-browser-function 'browse-url-chrome)
 (global-set-key (kbd "C-c u") 'browse-url)
 
 ;; enable isearch motion
@@ -103,7 +101,11 @@
   ("C-c l o" . link-hint-open-link)
   ("C-c l c" . link-hint-copy-link))
 
-;; attempting to hand-roll what spacemacs refers to as "compleseus"
+(use-package recentf
+  :hook (after-init . recentf-mode))
+;;
+;;; attempting to hand-roll what spacemacs refers to as "compleseus"
+;;
 (require 'auto-highlight-symbol)
 (global-auto-highlight-symbol-mode t)
 
@@ -239,6 +241,48 @@
   :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package vertico
+  :custom
+  (vertico-scroll-margin 0) ;; different scroll margin
+  (vertico-count 20) ;; show more candidates
+  (vertico-resize t) ;; grow and shrink the vertico minibuffer
+  (vertico-cycle t) ;; enable cycling for `vertico-next/previous'
+  :init
+  (vertico-mode))
+
+(use-package vertico-posframe
+  :init
+  (vertico-posframe-mode))
+
+(use-package savehist
+  :init
+  (savehist-mode))
+
+(use-package emacs
+  :custom
+  ;; support opening new minibuffers from within existing minibuffers
+  (enable-recursive-minibuffers t)
+  ;; Hide commands in M-x which do not work in the current mode. Vertico commands are
+  ;; hidden in normal buffers. This setting is useful beyond Vertico.
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  ;; do not allow the cursor in the minibuffer prompt
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt))
+  )
 
 (provide 'core)
 ;;; core.el ends here
