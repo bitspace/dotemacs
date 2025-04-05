@@ -78,12 +78,9 @@
   :commands lsp)
 
 (use-package lsp-ui :commands lsp-ui-mode)
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 (lsp-treemacs-sync-mode 1)
-
-(define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol)
 
 ;; dap
 (use-package dap-mode
