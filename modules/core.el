@@ -274,6 +274,10 @@
 
 (use-package emacs
   :custom
+  ;; enable indentation + completion with the TAB key
+  (tab-always-indent 'complete)
+  ;; Emacs 30 and newer: disable Ispell completion function
+  (text-mode-ispell-word-completion nil)
   ;; support opening new minibuffers from within existing minibuffers
   (enable-recursive-minibuffers t)
   ;; Hide commands in M-x which do not work in the current mode. Vertico commands are

@@ -21,7 +21,8 @@
                       quelpa ripgrep treemacs treemacs-icons-dired
                       treemacs-magit treemacs-projectile unfill
                       vertico vertico-posframe which-key
-                      whole-line-or-region yasnippet)))
+                      whole-line-or-region yasnippet))
+ '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
