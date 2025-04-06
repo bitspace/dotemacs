@@ -17,10 +17,36 @@
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 (setopt ediff-diff-options "-w")
 
+;; corfu. The fact that I have this in my prog module is sort of arbitrary, I guess.
+(use-package corfu
+  :custom
+  (corfu-cycle t) ;; enable cycling for `corfu-next/previous'
+  (corfu-quit-at-boundary nil) ;; never quit at completion boundary
+  (corfu-quit-no-match nil) ;; never quit, even if there is no match
+  (corfu-preview-current nil) ;; disable current candidate preview
+  (corfu-preselect 'prompt) ;; preselect the prompt
+  (corfu-on-exact-match nil) ;; configure handling of exact matches
+  ;; Enable corfu only for certain modes
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+  :init
+  (global-corfu-mode))
+
+;; use dabbrev with corfu
+(use-package dabbrev
+  ;; Swap M-/ and C-M-/
+  :bind (("M-/" . dabbrev-completion)
+         ("C-M-/" . dabbrev-expand))
+  :config
+  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
+
 ;; auto-match pairs (brackets, braces, parens, etc)
 (electric-pair-mode 1)
 
-(setopt tab-always-indent 'complete) ; TAB tries to complete, else indent
 (setopt completion-styles '(basic initials substring))
 (setopt completion-auto-help 'always) ; another option is 'lazy'
 (setopt completions-max-height 20)

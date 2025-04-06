@@ -72,6 +72,9 @@
 ;; Hide away leading stars on terminal
 (setopt org-superstar-leading-fallback ?\s)
 
+;; use org for txt files too?
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+
 ;; Make org functions available across all of Emacs instead of just in an org-mode buffer
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
