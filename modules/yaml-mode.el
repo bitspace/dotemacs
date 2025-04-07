@@ -472,6 +472,7 @@ this will do usual adaptive fill behaviors."
 
 (add-hook 'yaml-mode-hook 'yaml-set-imenu-generic-expression)
 
+(setq yaml-ts-mode-hook yaml-mode-hook)
 
 (defun yaml-mode-version ()
   "Display version of `yaml-mode'."

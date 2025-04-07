@@ -17,6 +17,14 @@
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 (setopt ediff-diff-options "-w")
 
+;; enable tree-sitter as broadly as supported
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 ;; corfu. The fact that I have this in my prog module is sort of arbitrary, I guess.
 (use-package corfu
   :custom
@@ -32,6 +40,17 @@
   ;;        (eshell-mode . corfu-mode))
   :init
   (global-corfu-mode))
+
+;; prescient integration with corfu
+(use-package corfu-prescient
+  :demand t
+  :after corfu prescient
+  :custom
+  (corfu-prescient-enable-sorting t)
+  (corfu-prescient-override-sorting nil)
+  (corfu-prescient-enable-filtering nil)
+  :config
+  (corfu-prescient-mode 1))
 
 ;; use dabbrev with corfu
 (use-package dabbrev

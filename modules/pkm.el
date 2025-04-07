@@ -21,8 +21,11 @@
           '((nil :maxlevel . 3)
             (org-agenda-files :maxlevel . 3)))
   (setopt org-todo-keywords
-          '((sequence "TODO(t)" "STARTED(s!)" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)")))
+          '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+            (sequence "WAITING(w@/!)" "STARTED(s!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING")))
   (setopt org-startup-indented t)
+  (setopt org-use-fast-todo-selection t)
+  (setopt org-treat-S-cursor-todo-selection-as-state-change nil)
   (setopt org-inlinetask-show-first-star t)
   (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
   (set-face-attribute 'org-level-7 nil :inherit 'org-level-8)

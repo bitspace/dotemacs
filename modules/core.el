@@ -237,23 +237,38 @@
                  nil
                  (window-parameters (mode-line-format . none)))))
 
+;; embark integration with consult
 (use-package embark-consult
   :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; nerd icons in completions
 (use-package nerd-icons-completion
   :after marginalia
+  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
   :config
-  (nerd-icons-completion-mode)
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+  (nerd-icons-completion-mode))
 
+;; orderless for filtering completions
 (use-package orderless
   :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; prescient for sorting completions (orderless does not sort)
+(use-package prescient
+  :custom
+  (prescient-aggressive-file-save t)
+  (prescient-sort-length-enable nil)
+  (prescient-sort-full-matches-first t)
+  (prescient-history-length 200)
+  (prescient-frequency-decay 0.997)
+  (prescient-frequency-threshold 0.05)
+  :config
+  (prescient-persist-mode 1))
 
 (use-package vertico
   :custom
@@ -264,9 +279,21 @@
   :init
   (vertico-mode))
 
+;; vertico-posframe: not sure I like this, at least not in its default configuration
 (use-package vertico-posframe
   :init
   (vertico-posframe-mode))
+
+;; prescient integration with vertico
+(use-package vertico-prescient
+  :demand t
+  :after vertico prescient
+  :custom
+  (vertico-prescient-enable-sorting t)
+  (vertico-prescient-override-sorting nil)
+  (vertico-prescient-enable-filtering nil)
+  :config
+  (vertico-prescient-mode 1))
 
 (use-package savehist
   :init
