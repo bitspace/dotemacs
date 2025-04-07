@@ -39,10 +39,21 @@
 (set-fontset-font t '(#x1f000 . #x1faff)
                   (font-spec :family "Noto Color Emoji"))
 
+;; all-the-icons
+(use-package all-the-icons
+  :if (display-graphic-p))
+
 ;; nerd icons
 (use-package nerd-icons
   :custom
   (nerd-icons-font-family "Symbols Nerd Font Mono"))
+
+;; all-the-icons-nerd-fonts
+(use-package all-the-icons-nerd-fonts
+  :after all-the-icons
+  :demand t
+  :config
+  (all-the-icons-nerd-fonts-prefer))
 
 (load-theme 'catppuccin :no-confirm)
 

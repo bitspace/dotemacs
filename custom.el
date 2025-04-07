@@ -10,18 +10,21 @@
      "/home/chris/Documents/metalmind/projects.org"
      "/home/chris/Documents/metalmind/tasks.org"))
  '(package-selected-packages
-   '(catppuccin-theme company consult-yasnippet corfu dap-mode eat
-                      flycheck forge geiser-mit gptel helm helm-lsp
-                      helm-make helpful json-mode keycast ligature
-                      link-hint lsp-java lsp-mode lsp-treemacs lsp-ui
-                      magit marginalia markdown-mode mwim nerd-icons
-                      nerd-icons-completion nerd-icons-corfu
-                      nerd-icons-dired orderless org-bullets
-                      org-contrib org-superstar persp-mode projectile
-                      quelpa ripgrep treemacs treemacs-icons-dired
-                      treemacs-magit treemacs-projectile unfill
-                      vertico vertico-posframe which-key
-                      whole-line-or-region yasnippet))
+   '(all-the-icons all-the-icons-completion all-the-icons-dired
+                   all-the-icons-gnus all-the-icons-nerd-fonts
+                   catppuccin-theme company consult-yasnippet corfu
+                   corfu-prescient dap-mode eat flycheck forge
+                   geiser-mit gptel helm helm-lsp helm-make helpful
+                   json-mode keycast ligature link-hint lsp-java
+                   lsp-mode lsp-treemacs lsp-ui magit marginalia
+                   markdown-mode mwim nerd-icons nerd-icons-completion
+                   nerd-icons-corfu nerd-icons-dired orderless
+                   org-bullets org-contrib org-superstar persp-mode
+                   prescient projectile quelpa ripgrep treemacs
+                   treemacs-icons-dired treemacs-magit
+                   treemacs-projectile treesit-auto unfill vertico
+                   vertico-posframe vertico-prescient which-key
+                   whole-line-or-region yasnippet))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

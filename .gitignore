@@ -18,4 +18,6 @@ projects
 secrets/
 tramp
 transient/
+tree-sitter/
 url/
+var/
