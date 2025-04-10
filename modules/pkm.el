@@ -15,6 +15,13 @@
   (setopt org-insert-heading-respect-content t)
   (setopt org-log-done 'time)
   (setopt org-log-into-drawer t)
+  (setopt org-auto-align-tags nil)
+  (setopt org-tags-column 0)
+  (setopt org-catch-invisible-edits 'show-and-error)
+  (setopt org-special-ctrl-a/e t)
+  (setopt org-pretty-entities t)
+  (setopt org-agenda-tags-column 0)
+  (setopt org-ellipsis "…")
   (setopt org-directory "~/Documents/metalmind")
   (setopt org-default-notes-file (concat org-directory "refile.org"))
   (setopt org-agenda-files (list (concat org-directory "/agenda")))
@@ -44,14 +51,27 @@
   (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
   (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
   (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
-  (set-face-attribute 'org-document-title nil :height 1.3 :foreground 'unspecified :inherit 'org-level-8)
+  (set-face-attribute 'org-document-title nil :height 1.2 :foreground 'unspecified :inherit 'org-level-8)
   (setopt org-cycle-level-faces nil)
   (setopt org-n-level-faces 4)
   (setopt org-hide-leading-stars t)
   (setopt org-hide-emphasis-markers t)
-  (setopt org-confirm-babel-evaluate nil)
-  :hook (org-mode . (lambda ()
-                      (org-superstar-mode 1))))
+  (setopt org-confirm-babel-evaluate nil))
+
+;; org-modern. I'll put these into a better place later
+(use-package org-modern
+  :ensure t
+  :custom
+  (org-modern-hide-stars t)
+  (org-modern-table t)
+  :hook
+  (org-mode . org-modern-mode)
+  (org-agenda-finalize . org-modern-agenda))
+
+;; and org-modern-indent
+(use-package org-modern-indent
+  :config
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
 (setq org-capture-templates
       '(("t" "todo" entry (file "~/Documents/metalmind/refile.org")
@@ -60,22 +80,11 @@
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("j" "Journal" entry (file+olp+datetree "~/Documents/metalmind/journal.org"))))
 
-;; org-superstar
-(use-package org-superstar)
-
 ;; org inline tasks
 (use-package org-inlinetask)
 (set-face-attribute 'org-inlinetask nil
                     :foreground 'unspecified
                     :inherit 'bold)
-
-(with-eval-after-load 'org-superstar
-  (set-face-attribute 'org-superstar-item nil :height 1.2)
-  (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
-  (set-face-attribute 'org-superstar-first nil :foreground "#0000e1"))
-(setopt org-superstar-cycle-headline-bullets nil)
-;; Hide away leading stars on terminal
-(setopt org-superstar-leading-fallback ?\s)
 
 ;; use org for txt files too?
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
