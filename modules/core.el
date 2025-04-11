@@ -279,11 +279,6 @@
   :init
   (vertico-mode))
 
-;; vertico-posframe: not sure I like this, at least not in its default configuration
-(use-package vertico-posframe
-  :init
-  (vertico-posframe-mode))
-
 ;; prescient integration with vertico
 (use-package vertico-prescient
   :demand t

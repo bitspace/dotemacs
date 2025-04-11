@@ -107,5 +107,6 @@
 
   (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
   (add-hook 'gptel-post-response-hook 'gptel-end-of-response))
+
 (provide 'cjw-utils)
 ;;; cjw-utils.el ends here
