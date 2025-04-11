@@ -56,22 +56,14 @@
   (setopt org-n-level-faces 4)
   (setopt org-hide-leading-stars t)
   (setopt org-hide-emphasis-markers t)
-  (setopt org-confirm-babel-evaluate nil))
-
-;; org-modern. I'll put these into a better place later
-(use-package org-modern
-  :ensure t
-  :custom
-  (org-modern-hide-stars t)
-  (org-modern-table t)
+  (setopt org-confirm-babel-evaluate nil)
   :hook
-  (org-mode . org-modern-mode)
-  (org-agenda-finalize . org-modern-agenda))
+  (org-mode . org-modern-mode))
 
 ;; and org-modern-indent
 (use-package org-modern-indent
-  :config
-  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
+  :hook
+  (org-mode . (lambda () (org-modern-indent-mode 90))))
 
 (setq org-capture-templates
       '(("t" "todo" entry (file "~/Documents/metalmind/refile.org")
