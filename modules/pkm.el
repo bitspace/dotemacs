@@ -60,11 +60,6 @@
   :hook
   (org-mode . org-modern-mode))
 
-;; and org-modern-indent
-(use-package org-modern-indent
-  :hook
-  (org-mode . (lambda () (org-modern-indent-mode 90))))
-
 (setq org-capture-templates
       '(("t" "todo" entry (file "~/Documents/metalmind/refile.org")
          "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
@@ -89,7 +84,18 @@
 ;; org-babel: languages
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((scheme . t)))
+ '((css . t)
+   (emacs-lisp . t)
+   (java . t)
+   (js . t)
+   (lisp . t)
+   (org . t)
+   (scheme . t)
+   (sql . t)
+   (sqlite . t)
+   (python . t)
+   (shell . t)
+   ))
 
 ;; org-roam
 (use-package org-roam
