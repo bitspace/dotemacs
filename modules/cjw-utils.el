@@ -108,5 +108,103 @@
   (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
   (add-hook 'gptel-post-response-hook 'gptel-end-of-response))
 
+;; org-roam
+(defun cjw-org-roam-node-insert-immediate (arg &rest args)
+  "Insert an org-roam node immediately without subsequently opening the node buffer."
+  (interactive "P")
+  (let ((args (cons arg args))
+        (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+                                                  '(:immediate-finish t)))))
+    (apply #'org-roam-node-insert args)))
+
+(defun cjw-org-roam-filter-by-tag (tag-name)
+  (lambda (node)
+    (member tag-name (org-roam-node-tags node))))
+
+(defun cjw-org-roam-list-notes-by-tag (tag-name)
+  (mapcar #'org-roam-node-file
+          (seq-filter
+           (cjw-org-roam-filter-by-tag tag-name)
+           (org-roam-node-list))))
+
+(defun cjw-org-roam-refresh-agenda-list ()
+  (interactive)
+  (setopt org-agenda-files (cjw-org-roam-list-notes-by-tag "Project")))
+
+(defun cjw-org-roam-project-finalize-hook ()
+  "Adds the captured file to `org-agenda-files' if the capture was not aborted."
+  ;; remove the hook since it was added temporarily
+  (remove-hook 'org-capture-after-finalize-hook #'cjw-org-roam-project-finalize-hook)
+
+  ;; add project file to the agenda list if the capture was confirmed
+  (unless org-note-abort
+    (with-current-buffer (org-capture-get :buffer)
+      (add-to-list 'org-agenda-files (buffer-file-name)))))
+
+(defun cjw-org-roam-find-project ()
+  (interactive)
+  ;; add the project file to the agenda after capture is finished
+  (add-hook 'org-capture-after-finalize-hook #'cjw-org-roam-project-finalize-hook)
+
+  ;; select a project file to open, creating it if necessary
+  (org-roam-node-find
+   nil
+   nil
+   (cjw-org-roam-filter-by-tag "Project")
+   :templates
+   '(("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+      :unnarrowed t))))
+
+;; (global-set-key (kbd "C-c n p") #'cjw-org-roam-find-project)
+
+(defun cjw-org-roam-capture-inbox ()
+  (interactive)
+  (org-roam-capture- :node (org-roam-node-create)
+                     :templates '(("i" "inbox" plain "* %?"
+                                   :target (file+head "inbox.org" "#+title: Inbox\n")))))
+
+;; (global-set-key (kbd "C-c n b") #'cjw-org-roam-capture-inbox)
+
+(defun cjw-org-roam-capture-task ()
+  (interactive)
+  ;; add the project file to the agenda after capture is finished
+  (add-hook 'org-capture-after-finalize-hook cjw-org-roam-project-finalize-hook)
+
+  ;; capture the new task, creating the project file if necessary
+  (org-roam-capture- :node (org-roam-node-read
+                            nil
+                            (cjw-org-roam-filter-by-tag "Project"))
+                     :templates '(("p" "project" plain "** TODO %?"
+                                   :target (file+head+olp "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                          "#+title: ${title}\n#+category: ${title}\n#+filetags: Project"
+                                                          ("Tasks"))))))
+
+;; (global-set-key (kbd "C-c n t") #'cjw-org-roam-capture-task)
+
+(defun cjw-org-roam-copy-todo-to-today ()
+  (interactive)
+  (let ((org-refile-keep t) ;; set to nil to delete the original
+        (org-roam-dailies-capture-templates
+         '(("t" "tasks" entry "%?"
+            :target (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+        (org-after-refile-insert-hook #'save-buffer)
+        today-file
+        pos)
+    (save-window-excursion
+      (org-roam-dailies--capture (current-time) t)
+      (setq today-file (buffer-file-name))
+      (setq pos (point)))
+    ;; only refile if the target file is different from the current file
+    (unless (equal (file-truename today-file)
+                   (file-truename (buffer-file-name)))
+      (org-refile nil nil (list "Tasks" today-file nil pos)))))
+
+;; When I'm ready to implement the functionality in the previous function, figure out where to put this
+;; (add-to-list 'org-after-todo-state-change-hook
+;;              (lambda ()
+;;                (when (equal org-state "DONE")
+;;                  (cjw-org-roam-copy-todo-to-today))))
+
 (provide 'cjw-utils)
 ;;; cjw-utils.el ends here

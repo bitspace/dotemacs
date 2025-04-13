@@ -91,5 +91,54 @@
  'org-babel-load-languages
  '((scheme . t)))
 
+;; org-roam
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/Documents/akasha/"))
+  (org-roam-completion-everywhere t)
+  (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-dailies-directory "journal/")
+  (org-roam-capture-templates
+   '(("d" "default" plain
+      "%?"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("l" "programming language" plain
+      "* Characteristics\n\n- Family: %?\n- Inspired by:\n\n* Reference:\n\n"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("b" "book notes" plain
+      (file "~/Documents/akasha/templates/book-notes.org")
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("p" "project" plain
+      "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+      :unnarrowed t)))
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%I:%M %p>: %?"
+      :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n I" . cjw-org-roam-node-insert-immediate)
+         ("C-c n c" . org-roam-capture)
+         ("C-c n J" . org-roam-dailies-capture-today)
+         ("C-c n Y" . org-roam-dailies-capture-yesterday)
+         ("C-c n T" . org-roam-dailies-capture-tomorrow)
+         ("C-c n D" . org-roam-dailies-capture-date)
+         ("C-c n j" . org-roam-dailies-goto-today)
+         ("C-c n y" . org-roam-dailies-goto-yesterday)
+         ("C-c n t" . org-roam-dailies-goto-tomorrow)
+         ("C-c n p" . org-roam-dailies-goto-previous-note)
+         ("C-c n n" . org-roam-dailies-goto-next-note)
+         ("C-c n d" . org-roam-dailies-goto-date))
+  :config
+  (require 'org-roam-dailies)
+  (require 'org-roam-protocol)
+  (org-roam-db-autosync-mode))
+
 (provide 'pkm)
 ;;; pkm.el ends here
