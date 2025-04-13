@@ -1,4 +1,4 @@
-;;; auto-highlight-symbol.el --- Automatic highlighting current symbol minor mode
+;;; auto-highlight-symbol.el --- Automatic highlighting current symbol minor mode -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2009-2010 Mitsuo Saito <arch320@NOSPAM.gmail.com>
 ;; Copyright (C) 2013-2020 Gennadiy Zlobin <gennad.zlobin@NOSPAM.gmail.com>
