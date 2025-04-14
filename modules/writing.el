@@ -12,11 +12,11 @@
 (delete-selection-mode 1)
 
 ;; auto-insert
-(use-package autoinsert)
-(setq auto-insert-directory (concat user-emacs-directory "snippets"))
-(add-to-list 'auto-insert-alist
-             '(org-mode . "template.org"))
-(auto-insert-mode t)
+;; (use-package autoinsert)
+;; (setq auto-insert-directory (concat user-emacs-directory "snippets"))
+;; (add-to-list 'auto-insert-alist
+;;              '(org-mode . "template.org"))
+;; (auto-insert-mode t)
 
 ;; flycheck
 (global-flycheck-mode +1)
