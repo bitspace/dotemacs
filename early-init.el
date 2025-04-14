@@ -16,58 +16,10 @@
  'package-archives
  '("melpa" . "https://melpa.org/packages/"))
 
-(require 'time-date)
-
-(defvar cjw-package-perform-stale-archive-check-p t
-  "Check if any package archives are stale.")
-
-(defvar cjw-package-update-days 1
-  "Threshold in days beyond when a package archive is considered stale.")
+;; bump up GC threshold. I have oodles of memory.
+(setopt gc-cons-threshold (* 1024 1024 1024))
 
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
-
-(defun cjw-package-archive-stale-p (archive)
-  "Return t if ARCHIVE is stale.
-
-ARCHIVE is stale if the on-disk cache is older than `cjw-package-update-days' old. If `cjw-package-perform-stale-archive-check-p' is nil, then check is skipped."
-  (let* ((today (decode-time nil nil t))
-         (archive-name (expand-file-name
-                        (format "archives/%s/archive-contents" archive)
-                        package-user-dir))
-         (last-update-time (decode-time (file-attribute-modification-time
-                                         (file-attributes archive-name))))
-         (delta (make-decoded-time :day cjw-package-update-days)))
-    (when cjw-package-perform-stale-archive-check-p
-      (time-less-p (encode-time (decoded-time-add last-update-time delta))
-                   (encode-time today)))))
-
-(defun cjw-package-archives-stale-p ()
-  "Return t if any package archives' cache is out of date.
-
-Check each archive listed in `package-archives'. If the on-disk cache is older than `cjw-package-update-days', return a non-nil value. Fails fast; will return t for the first stale archive found or nil if they are all up to date."
-  (interactive)
-  (cl-some #'cjw-package-archive-stale-p (mapcar #'car package-archives)))
-
-(defun cjw-package-initialize ()
-  "Initialize the package system."
-  (when package-enable-at-startup
-    (package-initialize)
-
-    (require 'seq)
-    (message "cjw-package-config: checking package archives")
-    (cond ((seq-empty-p package-archive-contents)
-           (progn
-             (message "cjw-package-config: package archives empty, initializing")
-             (package-refresh-contents)))
-          ((cjw-package-archives-stale-p)
-           (progn
-             (message "cjw-package-config: package archives stale, refreshing")
-             (package-refresh-contents t))))
-    (message "cjw-package-config: package system initalized")))
-
-;;; Initialize package system
-;; Refresh archives if necessary before init file runs.
-(add-hook 'before-init-hook #'cjw-package-initialize)
 
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))

@@ -49,8 +49,8 @@
   (set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
   (set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
   (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
-  (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
-  (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-5 nil :foreground "#0b0b75" :inherit 'org-level-8)
+  (set-face-attribute 'org-level-4 nil :foreground "#cba6f7" :inherit 'org-level-8)
   (set-face-attribute 'org-document-title nil :height 1.2 :foreground 'unspecified :inherit 'org-level-8)
   (setopt org-cycle-level-faces nil)
   (setopt org-n-level-faces 4)
@@ -59,11 +59,6 @@
   (setopt org-confirm-babel-evaluate nil)
   :hook
   (org-mode . org-modern-mode))
-
-;; and org-modern-indent
-(use-package org-modern-indent
-  :hook
-  (org-mode . (lambda () (org-modern-indent-mode 90))))
 
 (setq org-capture-templates
       '(("t" "todo" entry (file "~/Documents/metalmind/refile.org")
@@ -89,7 +84,18 @@
 ;; org-babel: languages
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((scheme . t)))
+ '((css . t)
+   (emacs-lisp . t)
+   (java . t)
+   (js . t)
+   (lisp . t)
+   (org . t)
+   (scheme . t)
+   (sql . t)
+   (sqlite . t)
+   (python . t)
+   (shell . t)
+   ))
 
 ;; org-roam
 (use-package org-roam
@@ -104,18 +110,9 @@
       "%?"
       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
-     ("l" "programming language" plain
-      "* Characteristics\n\n- Family: %?\n- Inspired by:\n\n* Reference:\n\n"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("b" "book notes" plain
-      (file "~/Documents/akasha/templates/book-notes.org")
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("p" "project" plain
-      "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
-      :unnarrowed t)))
+     ("n" "note" plain
+      "%?"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: %^{filetags}\n"))))
   (org-roam-dailies-capture-templates
    '(("d" "default" entry "* %<%I:%M %p>: %?"
       :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
