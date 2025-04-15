@@ -1,7 +1,7 @@
 ;; init.el --- core Emacs configuration and initialization -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; My Emacs init file
+;; My Emacs init loader
 
 ;; Copyright © 2025
 ;; SPDX-License-Identifier: Unlicense
@@ -17,7 +17,6 @@
 (use-package pkm)
 (use-package llm)
 (use-package writing)
-
 
 (provide 'init)
 ;;; init.el ends here

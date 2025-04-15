@@ -12,7 +12,8 @@
 (setopt mouse-yank-at-point t
         require-final-newline t
         visible-bell t
-        frame-inhibit-implied-resize t)
+        frame-inhibit-implied-resize t
+        warning-minimum-level :emergency)
 
 ;; numbered lines
 (setopt global-display-line-numbers-mode t)
@@ -39,23 +40,23 @@
 (set-fontset-font t '(#x1f000 . #x1faff)
                   (font-spec :family "Noto Color Emoji"))
 
-;; all-the-icons
-(use-package all-the-icons
-  :if (display-graphic-p))
-
 ;; nerd icons
 (use-package nerd-icons
   :custom
   (nerd-icons-font-family "Symbols Nerd Font Mono"))
 
-;; all-the-icons-nerd-fonts
-(use-package all-the-icons-nerd-fonts
-  :after all-the-icons
-  :demand t
-  :config
-  (all-the-icons-nerd-fonts-prefer))
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
-(load-theme 'catppuccin :no-confirm)
+;; nerd icons completion
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(load-theme 'modus-vivendi-tinted :no-confirm)
 
 ;; Enable ligatures
 (use-package ligature
@@ -90,41 +91,6 @@
 (setopt projectile-sort-order 'recently-active)
 (setopt projectile-enable-caching t)
 (setopt projectile-enable-caching 'persistent)
-
-;; treemacs
-(use-package treemacs
-  :ensure t
-  :defer t
-  :bind
-  (:map global-map
-        ("M-0" . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
-
-(use-package treemacs-projectile
-  :after (treemacs projectile)
-  :ensure t)
-
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
-
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
-
-(treemacs-start-on-boot)
-
-;; nerd icons completion
-(use-package nerd-icons-completion
-  :after marginalia
-  :config
-  (nerd-icons-completion-mode)
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
 (provide 'ui)
 ;;; ui.el ends here

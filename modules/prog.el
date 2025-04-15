@@ -123,9 +123,6 @@
   :commands lsp)
 
 (use-package lsp-ui :commands lsp-ui-mode)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-
-(lsp-treemacs-sync-mode 1)
 
 ;; dap
 (use-package dap-mode

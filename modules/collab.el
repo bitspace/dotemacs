@@ -18,6 +18,39 @@
 
 ;; gnus
 (use-package gnus
+  :ensure nil
+  :config
+  (require 'gnus-sum)
+  (require 'gnus-dired)
+  (require 'gnus-topic)
+  ;;; accounts
+  (setopt gnus-select-method '(nnnil nil))
+  (setopt gnus-secondary-select-methods
+        '((nnimap "bitspace"
+                  (nnimap-address "imap.googlemail.com")
+                  (nnimap-server-port "imaps")
+                  (nnimap-stream ssl)
+                  (nnir-search-engine imap)
+                  (nnmail-expiry-target "nnimap+bitspace:[Gmail]/Trash")
+                  (nnmail-expiry-wait 'immediate))
+          (nnimap "consumer"
+                  (nnimap-address "imap.gmail.com")
+                  (nnimap-server-port "imaps")
+                  (nnimap-stream ssl)
+                  (nnir-search-engine imap)
+                  (nnmail-expiry-target "nnimap+consumer:[Gmail]/Trash")
+                  (nnmail-expiry-wait 'immediate))
+          (nntp "gwene" (nntp-address "news.gwene.org"))))
+  (setopt gnus-posting-styles
+        '(("bitspace"
+           (address "Chris Woods <chris@bitspace.org>")
+           (organization "bitspace heavy industries")
+           (signature-file (concat user-emacs-directory ".signature-bitspace"))
+           ("X-Message-SMTP-Method" "smtp smtp.googlemail.com 587 chris@bitspace.org"))
+          ("consumer"
+           (address "Chris Woods <chris.woods@gmail.com>")
+           (signature-file (concat user-emacs-directory ".signature-consumer"))
+           ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 chris.woods@gmail.com"))))
   :bind
   (("C-c o g" . gnus)
    (:map gnus-group-mode-map
@@ -36,6 +69,7 @@
   (gnus-mime-display-multipart-related-as-mixed t)
   (gnus-auto-select-first nil)
   (gnus-summary-display-arrow nil)
+  (gnus-use-adaptive-scoring t)
   (gnus-thread-sort-functions
    '(gnus-thread-sort-by-most-recent-date
      (not gnus-thread-sort-by-number)))
@@ -56,33 +90,7 @@
 
   (gnus-user-date-format-alist '((t . "%Y-%m-%d (%a)")
                                  gnus-thread-sort-functions '(gnus-thread-sort-by-date)))
-  :config
-  (setq gnus-select-method '(nnnil nil))
-  (setq gnus-secondary-select-methods
-        '((nnimap "bitspace"
-                  (nnimap-address "imap.googlemail.com")
-                  (nnimap-server-port "imaps")
-                  (nnimap-stream ssl)
-                  (nnir-search-engine imap)
-                  (nnmail-expiry-target "nnimap+bitspace:[Gmail]/Trash")
-                  (nnmail-expiry-wait 'immediate))
-          (nnimap "consumer"
-                  (nnimap-address "imap.gmail.com")
-                  (nnimap-server-port "imaps")
-                  (nnimap-stream ssl)
-                  (nnir-search-engine imap)
-                  (nnmail-expiry-target "nnimap+consumer:[Gmail]/Trash")
-                  (nnmail-expiry-wait 'immediate))))
-  (setq gnus-posting-styles
-        '(("bitspace"
-           (address "Chris Woods <chris@bitspace.org>")
-           (organization "bitspace heavy industries")
-           (signature-file (concat user-emacs-directory ".signature-bitspace"))
-           ("X-Message-SMTP-Method" "smtp smtp.googlemail.com 587 chris@bitspace.org"))
-          ("consumer"
-           (address "Chris Woods <chris.woods@gmail.com>")
-           (signature-file (concat user-emacs-directory ".signature-consumer"))
-           ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 chris.woods@gmail.com")))))
+  )
 
 (provide 'collab)
 ;;; collab.el ends here
