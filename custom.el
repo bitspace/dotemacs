@@ -17,14 +17,15 @@
                    geiser-mit gptel helm helm-lsp helm-make helpful
                    json-mode keycast ligature link-hint lsp-java
                    lsp-mode lsp-treemacs lsp-ui magit marginalia
-                   markdown-mode mwim nerd-icons nerd-icons-completion
-                   nerd-icons-corfu nerd-icons-dired orderless
-                   org-bullets org-contrib org-modern org-roam
-                   org-superstar persp-mode prescient projectile
-                   quelpa ripgrep treemacs treemacs-icons-dired
-                   treemacs-magit treemacs-projectile treesit-auto
-                   unfill vertico vertico-posframe vertico-prescient
-                   which-key whole-line-or-region yasnippet))
+                   markdown-mode modus-themes mwim nerd-icons
+                   nerd-icons-completion nerd-icons-corfu
+                   nerd-icons-dired orderless org-bullets org-contrib
+                   org-modern org-roam org-superstar persp-mode
+                   prescient projectile quelpa ripgrep treemacs
+                   treemacs-icons-dired treemacs-magit
+                   treemacs-projectile treesit-auto unfill vertico
+                   vertico-posframe vertico-prescient which-key
+                   whole-line-or-region yasnippet))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

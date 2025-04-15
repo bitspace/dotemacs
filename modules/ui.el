@@ -12,7 +12,8 @@
 (setopt mouse-yank-at-point t
         require-final-newline t
         visible-bell t
-        frame-inhibit-implied-resize t)
+        frame-inhibit-implied-resize t
+        warning-minimum-level :emergency)
 
 ;; numbered lines
 (setopt global-display-line-numbers-mode t)
@@ -55,7 +56,7 @@
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
-(load-theme 'catppuccin :no-confirm)
+(load-theme 'modus-vivendi-tinted :no-confirm)
 
 ;; Enable ligatures
 (use-package ligature
