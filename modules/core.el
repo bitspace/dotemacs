@@ -106,8 +106,9 @@
 ;;
 ;;; attempting to hand-roll what spacemacs refers to as "compleseus"
 ;;
-(require 'auto-highlight-symbol)
-(global-auto-highlight-symbol-mode t)
+(use-package auto-highlight-symbol
+  :config
+  (global-auto-highlight-symbol-mode t))
 
 ;; consult
 ;; Example configuration for Consult
@@ -273,8 +274,8 @@
 (use-package vertico
   :custom
   (vertico-scroll-margin 0) ;; different scroll margin
-  (vertico-count 20) ;; show more candidates
-  (vertico-resize t) ;; grow and shrink the vertico minibuffer
+  (vertico-count 8) ;; show more candidates
+  (vertico-resize nil) ;; grow and shrink the vertico minibuffer
   (vertico-cycle t) ;; enable cycling for `vertico-next/previous'
   :init
   (vertico-mode))
