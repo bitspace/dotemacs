@@ -274,8 +274,8 @@
 (use-package vertico
   :custom
   (vertico-scroll-margin 0) ;; different scroll margin
-  (vertico-count 8) ;; show more candidates
-  (vertico-resize nil) ;; grow and shrink the vertico minibuffer
+  (vertico-count 4) ;; show more candidates
+  (vertico-resize t) ;; grow and shrink the vertico minibuffer
   (vertico-cycle t) ;; enable cycling for `vertico-next/previous'
   :init
   (vertico-mode))
