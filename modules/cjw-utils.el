@@ -40,12 +40,17 @@
      (concat "/sudo:root@localhost:"
              buffer-file-name))))
 
-(defun cjw-eval-and-run-all-tests-in-buffer ()
-  "Deletes all loaded tests from the runtime, evaluates the current buffer and runs all loaded tests with `ert'."
+(defun cjw-put-filename-on-clipboard ()
+  "Put the filename of the current buffer's file on the clipboard."
   (interactive)
-  (ert-delete-all-tests)
-  (eval-buffer)
-  (ert 't))
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (with-temp-buffer
+        (insert filename)
+        (clipboard-kill-region (point-min) (point-max)))
+      (message filename))))
 
 (defun cjw-initialize-gptel-models ()
   "Initializes models for gptel. Deferred this to a function because it prompts for GnuPG key."

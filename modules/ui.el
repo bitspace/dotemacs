@@ -17,9 +17,24 @@
 
 ;; numbered lines
 (setopt global-display-line-numbers-mode t)
+
 ;; column number and line number in modeline
 (setopt column-number-mode t)
 (setopt line-number-mode t)
+
+;; hide minor mode info in modeline
+(setopt mode-line-collapse-minor-modes
+        '(auto-save-mode
+          company-mode
+          corfu-mode
+          eldoc-mode
+          flycheck-mode
+          flyspell-mode
+          font-lock-mode
+          ligature-mode
+          outline-minor-mode
+          which-key-mode
+          yas-minor-mode))
 
 ;; restore the "legacy" way of navigating lines (not visual, but logical)
 (setopt line-move-visual nil)

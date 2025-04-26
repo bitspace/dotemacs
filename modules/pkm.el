@@ -6,6 +6,8 @@
 
 ;;; Commentary:
 
+;; Configuration for my personal knowledge management needs. This is, naturally, all about org and org-roam.
+
 ;;; Code:
 
 (use-package org
@@ -13,12 +15,15 @@
   :config
   (setopt org-M-RET-may-split-line '((default . nil)))
   (setopt org-insert-heading-respect-content t)
+  (setopt org-cycle-include-plain-lists t)
   (setopt org-log-done 'time)
   (setopt org-log-into-drawer t)
   (setopt org-auto-align-tags nil)
   (setopt org-tags-column 0)
   (setopt org-catch-invisible-edits 'show-and-error)
   (setopt org-special-ctrl-a/e t)
+  (setopt org-special-ctrl-k t)
+  (setopt org-special-ctrl-o t)
   (setopt org-pretty-entities t)
   (setopt org-agenda-tags-column 0)
   (setopt org-ellipsis "…")

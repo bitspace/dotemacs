@@ -19,6 +19,9 @@
 (if (memq system-type '(darwin windows-nt))
     (server-start))
 
+;; start maximized
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; Load my utility functions
 (use-package cjw-utils)
 
@@ -299,6 +302,8 @@
   :custom
   ;; enable indentation + completion with the TAB key
   (tab-always-indent 'complete)
+  ;; auto-revert: if there are changes on disk but no changes in buffer, automatically load from disk
+  (global-auto-revert-mode t)
   ;; Emacs 30 and newer: disable Ispell completion function
   (text-mode-ispell-word-completion nil)
   ;; support opening new minibuffers from within existing minibuffers
