@@ -58,9 +58,18 @@
    (:map gnus-summary-mode-map
          ("C-c a" . cjw-gnus-summary-archive)))
   :custom
+  (gnus-asynchronous t)
+  (gnus-use-cache t)
+  (gnus-use-header-prefetch t)
   (gnus-directory (concat user-emacs-directory "gnus"))
   (gnus-init-file (concat user-emacs-directory "gnus.el"))
+  (gnus-startup-file (concat gnus-directory "/.newsrc"))
+  (gnus-cache-directory (concat gnus-directory "/news/cache"))
+  (gnus-article-save-directory (concat gnus-directory "/news"))
+  (gnus-kill-files-direcory (concat gnus-directory "/news"))
   (gnus-message-archive-group (format-time-string "sent.%Y"))
+  (nndraft-directory (concat gnus-directory "/mail/draft"))
+  (nnfolder-directory (concat gnus-directory "/mail/archive"))
   (gnus-gcc-mark-as-read t)
   (gnus-search-use-parsed-queries t)
   (gnus-auto-select-next nil)
@@ -74,19 +83,22 @@
    '(gnus-thread-sort-by-most-recent-date
      (not gnus-thread-sort-by-number)))
   (gnus-show-threads t)
-  (gnus-sum-thread-tree-false-root nil)
-  (gnus-sum-thread-tree-root nil)
-  (gnus-sum-thread-tree-indent " ")
+  (gnus-sum-thread-tree-false-root " ")
+  (gnus-sum-thread-tree-root "r ")
+  (gnus-sum-thread-tree-indent "  ")
+  (gnus-sum-thread-tree-single-indent "◎ ")
   (gnus-sum-thread-tree-vertical "│")
   (gnus-sum-thread-tree-leaf-with-other "├─► ")
   (gnus-sum-thread-tree-single-leaf "╰─► ")
-  (gnus-summary-line-format (concat
-                             "%0{%U%R%z%}"
-                             "%3{│%}%1{%&user-date;%}%3{│%}"
-                             "%4{%-20,20f%}"
-                             " "
-                             "%1{%B%}"
-                             "%s\n"))
+  (gnus-summary-line-format (concat "%0{%U%R%z%}"
+				    "%3{│%}" "%1{%d%}" "%3{│%}"
+				    "  "
+				    "%4{%-20,20f%}"
+				    "  "
+				    "%3{│%}"
+				    " "
+				    "%1{%B%}"
+				    "%s\n"))
 
   (gnus-user-date-format-alist '((t . "%Y-%m-%d (%a)")
                                  gnus-thread-sort-functions '(gnus-thread-sort-by-date)))
