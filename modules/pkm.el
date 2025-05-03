@@ -125,7 +125,7 @@
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
-         ("C-c n I" . cjw-org-roam-node-insert-immediate)
+         ("C-c n I" . cjw/org-roam-node-insert-immediate)
          ("C-c n c" . org-roam-capture)
          ("C-c n J" . org-roam-dailies-capture-today)
          ("C-c n Y" . org-roam-dailies-capture-yesterday)
