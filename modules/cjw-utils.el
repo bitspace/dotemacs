@@ -211,5 +211,5 @@
 ;;                (when (equal org-state "DONE")
 ;;                  (cjw/org-roam-copy-todo-to-today))))
 
-(provide 'cjw/utils)
+(provide 'cjw-utils)
 ;;; cjw-utils.el ends here

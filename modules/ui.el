@@ -95,7 +95,7 @@
   (global-ligature-mode t))
 
 ;; soft wrap in text modes that are not programming languages
-(cjw-enable-visual-line-mode-on-hooks
+(cjw/enable-visual-line-mode-on-hooks
  '(text-mode-hook
    org-mode-hook
    markdown-mode-hook))

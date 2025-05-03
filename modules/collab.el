@@ -11,7 +11,7 @@
 (setq user-mail-address "chris@bitspace.org")
 (setq user-full-name "Chris Woods")
 
-(defun cjw-gnus-group-list-subscribed-groups ()
+(defun cjw/gnus-group-list-subscribed-groups ()
   "List all subscribed groups with or without unread messages."
   (interactive)
   (gnus-group-list-all-groups 5))
@@ -54,9 +54,9 @@
   :bind
   (("C-c o g" . gnus)
    (:map gnus-group-mode-map
-         ("o" . cjw-gnus-group-list-subscribed-groups))
+         ("o" . cjw/gnus-group-list-subscribed-groups))
    (:map gnus-summary-mode-map
-         ("C-c a" . cjw-gnus-summary-archive)))
+         ("C-c a" . cjw/gnus-summary-archive)))
   :custom
   (gnus-asynchronous t)
   (gnus-use-cache t)
