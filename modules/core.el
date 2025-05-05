@@ -22,6 +22,9 @@
 ;; start maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;; load auth-sources early, only on frame visibility
+;; (add-hook 'after-make-frame-functions #'auth-source-sync)
+
 ;; Load my utility functions
 (use-package cjw-utils)
 
