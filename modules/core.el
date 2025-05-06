@@ -22,6 +22,9 @@
 ;; start maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;; load auth-sources early, only on frame visibility
+;; (add-hook 'after-make-frame-functions #'auth-source-sync)
+
 ;; Load my utility functions
 (use-package cjw-utils)
 
@@ -61,6 +64,9 @@
 
 ;; dired-x
 (use-package dired-x)
+
+;; GnuPG pinentry
+(setopt epg-pinentry-mode 'loopback)
 
 ;; set up auth source. The sources listed here should not be committed to a remote source control repo.
 (setopt auth-sources
@@ -277,11 +283,20 @@
 (use-package vertico
   :custom
   (vertico-scroll-margin 0) ;; different scroll margin
-  (vertico-count 4) ;; show more candidates
+  (vertico-count 6) ;; show more candidates
   (vertico-resize t) ;; grow and shrink the vertico minibuffer
   (vertico-cycle t) ;; enable cycling for `vertico-next/previous'
   :init
   (vertico-mode))
+
+;; vertico-posframe - display vertico completions in a modal frame
+(use-package vertico-posframe
+  :init
+  (vertico-posframe-mode)
+  :custom
+  (vertico-posframe-parameters
+   '((left-fringe . 8)
+     (right-fringe . 8))))
 
 ;; prescient integration with vertico
 (use-package vertico-prescient

@@ -8,6 +8,7 @@
 
 
 ;;; Code:
+(add-hook 'after-make-frame-functions #'cjw/initialize-gptel-models)
 
 (provide 'llm)
 ;;; llm.el ends here

@@ -27,7 +27,7 @@
   (setopt org-pretty-entities t)
   (setopt org-agenda-tags-column 0)
   (setopt org-ellipsis "…")
-  (setopt org-directory "~/Documents/metalmind")
+  (setopt org-directory "~/Documents/akasha")
   (setopt org-default-notes-file (concat org-directory "refile.org"))
   (setopt org-agenda-files (list (concat org-directory "/agenda")))
   (setopt org-refile-targets
@@ -66,11 +66,11 @@
   (org-mode . org-modern-mode))
 
 (setq org-capture-templates
-      '(("t" "todo" entry (file "~/Documents/metalmind/refile.org")
+      '(("t" "todo" entry (file "~/Documents/akasha/refile.org")
          "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("n" "note" entry (file "~/Documents/metalmind/refile.org")
+        ("n" "note" entry (file "~/Documents/akasha/refile.org")
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("j" "Journal" entry (file+olp+datetree "~/Documents/metalmind/journal.org"))))
+        ("j" "Journal" entry (file+olp+datetree "~/Documents/akasha/journal/journal.org"))))
 
 ;; org inline tasks
 (use-package org-inlinetask)

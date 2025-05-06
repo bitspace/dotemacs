@@ -3,12 +3,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   '("~/Documents/metalmind/work/hyprland-setup.org"
-     "/home/chris/Documents/metalmind/README.org"
-     "/home/chris/Documents/metalmind/capture.org"
-     "/home/chris/Documents/metalmind/projects.org"
-     "/home/chris/Documents/metalmind/tasks.org"))
  '(package-selected-packages
    '(all-the-icons all-the-icons-completion all-the-icons-dired
                    all-the-icons-gnus all-the-icons-nerd-fonts
@@ -32,7 +26,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fixed-pitch ((t (:family "JetBrainsMono Nerd Font Mono" :height 140))))
+ '(fixed-pitch ((t (:family "JetBrainsMono Nerd Font" :height 160))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-code ((t (:inherit (shadow fixed-pitch)))))
  '(org-document-info ((t (:foreground "dark orange"))))
