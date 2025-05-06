@@ -65,6 +65,9 @@
 ;; dired-x
 (use-package dired-x)
 
+;; GnuPG pinentry
+(setopt epg-pinentry-mode 'loopback)
+
 ;; set up auth source. The sources listed here should not be committed to a remote source control repo.
 (setopt auth-sources
         '((:source "~/.config/emacs/secrets/.authinfo.gpg")))
