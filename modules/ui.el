@@ -71,7 +71,7 @@
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
-(load-theme 'modus-vivendi-tinted :no-confirm)
+(load-theme 'ef-dark :no-confirm)
 
 ;; Enable ligatures
 (use-package ligature

@@ -32,8 +32,9 @@
 (setopt selection-coding-system 'utf-8)
 
 ;; regex style for re-builder
-(require 're-builder)
-(setopt reb-re-syntax 'string)
+(use-package re-builder
+  :custom
+  (reb-re-syntax 'string))
 
 ;; unset `C-x C-v' which is bound by default to `find-alternate-file'.
 ;; unbinding it frees it up to be a prefix if desired.

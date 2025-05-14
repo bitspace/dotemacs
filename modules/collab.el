@@ -19,10 +19,8 @@
 ;; gnus
 (use-package gnus
   :ensure nil
+  :after (gnus-sum gnus-dired gnus-topic)
   :config
-  (require 'gnus-sum)
-  (require 'gnus-dired)
-  (require 'gnus-topic)
   ;;; accounts
   (setopt gnus-select-method '(nnnil nil))
   (setopt gnus-secondary-select-methods
@@ -101,8 +99,7 @@
 				    "%s\n"))
 
   (gnus-user-date-format-alist '((t . "%Y-%m-%d (%a)")
-                                 gnus-thread-sort-functions '(gnus-thread-sort-by-date)))
-  )
+                                 gnus-thread-sort-functions '(gnus-thread-sort-by-date))))
 
 (provide 'collab)
 ;;; collab.el ends here
