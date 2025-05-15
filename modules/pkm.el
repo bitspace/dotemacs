@@ -137,8 +137,9 @@
          ("C-c n p" . org-roam-dailies-goto-previous-note)
          ("C-c n n" . org-roam-dailies-goto-next-note)
          ("C-c n d" . org-roam-dailies-goto-date))
-  :after (org-roam-dailies org-roam-protocol)
   :config
+  (require 'org-roam-dailies)
+  (require 'org-roam-protocol)
   (org-roam-db-autosync-mode))
 
 (provide 'pkm)
