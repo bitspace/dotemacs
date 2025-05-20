@@ -20,11 +20,11 @@
                    nerd-icons nerd-icons-completion nerd-icons-corfu
                    nerd-icons-dired nginx-mode orderless org-bullets
                    org-contrib org-modern org-roam org-superstar
-                   persp-mode prescient projectile quelpa ripgrep
-                   treemacs treemacs-icons-dired treemacs-magit
-                   treemacs-projectile treesit-auto unfill vertico
-                   vertico-posframe vertico-prescient which-key
-                   whole-line-or-region yasnippet))
+                   persp-mode pipenv prescient projectile quelpa
+                   ripgrep treemacs treemacs-icons-dired
+                   treemacs-magit treemacs-projectile treesit-auto
+                   unfill vertico vertico-posframe vertico-prescient
+                   which-key whole-line-or-region yasnippet))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

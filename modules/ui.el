@@ -101,11 +101,18 @@
    markdown-mode-hook))
 
 ;; projectile
-(projectile-mode 1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(setopt projectile-sort-order 'recently-active)
-(setopt projectile-enable-caching t)
-(setopt projectile-enable-caching 'persistent)
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/projects")
+    (setopt projectile-project-search-path '("~/projects")))
+  (setopt projectile-switch-project-action #'projectile-dired)
+  (setopt projectile-sort-order 'recently-active)
+  (setopt projectile-enable-caching t)
+  (setopt projectile-enable-caching 'persistent))
 
 (provide 'ui)
 ;;; ui.el ends here
