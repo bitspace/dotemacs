@@ -21,7 +21,7 @@
                    nerd-icons-dired nginx-mode orderless org-bullets
                    org-contrib org-modern org-roam org-superstar
                    persp-mode pipenv prescient projectile quelpa
-                   ripgrep treemacs treemacs-icons-dired
+                   ripgrep ron-mode treemacs treemacs-icons-dired
                    treemacs-magit treemacs-projectile treesit-auto
                    unfill vertico vertico-posframe vertico-prescient
                    which-key whole-line-or-region yasnippet))

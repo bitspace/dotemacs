@@ -104,6 +104,9 @@
 ;; magit
 (use-package magit)
 
+(use-package ron-mode
+  :mode "\\.ron\\'")
+
 ;; forge
 (with-eval-after-load 'magit
   (use-package forge))
