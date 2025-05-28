@@ -46,19 +46,16 @@
 ;; double spaces at sentence end is for 90 year olds
 (setopt sentence-end-double-space nil)
 
-;; default fixed font
+;;; fonts
+;; default
 (set-face-attribute 'default nil
-                    :family "JetBrainsMono Nerd Font"
+                    :family "JuliaMono Nerd Font Mono"
                     :height 160)
-
-;; emoji font
-(set-fontset-font t '(#x1f000 . #x1faff)
-                  (font-spec :family "Noto Color Emoji"))
 
 ;; nerd icons
 (use-package nerd-icons
   :custom
-  (nerd-icons-font-family "JetBrainsMono Nerd Font"))
+  (nerd-icons-font-family "JuliaMono Nerd Font Mono"))
 
 (use-package nerd-icons-dired
   :hook
@@ -71,7 +68,7 @@
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
-(load-theme 'modus-vivendi-tinted :no-confirm)
+(load-theme 'ef-dark :no-confirm)
 
 ;; Enable ligatures
 (use-package ligature
@@ -101,11 +98,18 @@
    markdown-mode-hook))
 
 ;; projectile
-(projectile-mode 1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(setopt projectile-sort-order 'recently-active)
-(setopt projectile-enable-caching t)
-(setopt projectile-enable-caching 'persistent)
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/projects")
+    (setopt projectile-project-search-path '("~/projects")))
+  (setopt projectile-switch-project-action #'projectile-dired)
+  (setopt projectile-sort-order 'recently-active)
+  (setopt projectile-enable-caching t)
+  (setopt projectile-enable-caching 'persistent))
 
 (provide 'ui)
 ;;; ui.el ends here

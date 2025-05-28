@@ -104,6 +104,9 @@
 ;; magit
 (use-package magit)
 
+(use-package ron-mode
+  :mode "\\.ron\\'")
+
 ;; forge
 (with-eval-after-load 'magit
   (use-package forge))
@@ -132,6 +135,12 @@
   (dap-auto-configure-mode))
 
 (use-package dap-java :ensure nil)
+
+;; pipenv
+(use-package pipenv
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended))
 
 (provide 'prog)
 ;;; prog.el ends here

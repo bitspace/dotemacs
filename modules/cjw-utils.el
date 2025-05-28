@@ -59,6 +59,7 @@
 
   ;; bind for `gptel-send' everywhere in Emacs
   (global-set-key (kbd "C-c RET") 'gptel-send)
+  (setq gptel-expert-commands t)
 
 ;;; set up model integrations
 

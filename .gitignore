@@ -1,6 +1,7 @@
 *.eld
 *.sqlite
 .cache/
+.dap-breakpoints
 *.db
 .lsp-session-v1
 .org-id-locations
